@@ -359,7 +359,7 @@ const pass=document.getElementById('login-pass').value.trim();
 if(!user||!pass){document.getElementById('login-error').style.display='block';document.getElementById('login-error').textContent='Ingrese usuario y clave';return}
 document.getElementById('login-error').style.display='none';
 try{
-const{data,error}=await sb.from('gym_usuarios').select('*').eq('usuario',user).eq('clave',pass).single();
+const{data,error}=await sb.from('usuarios').select('*').eq('usuario',user).eq('clave',pass).single();
 if(error||!data){document.getElementById('login-error').style.display='block';document.getElementById('login-error').textContent='Usuario o clave incorrecta';return}
 usuarioActual=data;
 document.getElementById('login-screen').style.display='none';
@@ -1178,7 +1178,7 @@ nt('Migracion exitosa! '+total+' registros subidos a la nube','ok');
 let usuarios=[],editUsrIdx=-1;
 async function cargarUsuarios(){
 try{
-const{data,error}=await sb.from('gym_usuarios').select('*').eq('rol','trabajador').order('id');
+const{data,error}=await sb.from('usuarios').select('*').eq('rol','trabajador').order('id');
 if(error){nt('Error cargando usuarios','er');return}
 usuarios=data||[];
 renderUsuarios();
@@ -1206,7 +1206,7 @@ const updateObj={};
 if(nombre!==(u.nombre||''))updateObj.nombre=nombre||null;
 if(pass)updateObj.clave=pass;
 if(Object.keys(updateObj).length===0){cl('m-usr');return}
-const{error}=await sb.from('gym_usuarios').update(updateObj).eq('id',u.id);
+const{error}=await sb.from('usuarios').update(updateObj).eq('id',u.id);
 if(error){nt('Error al actualizar','er');return}
 if(updateObj.nombre!==undefined)u.nombre=updateObj.nombre;
 renderUsuarios();cl('m-usr');nt('Usuario actualizado','ok');
@@ -1216,7 +1216,7 @@ const nueva=document.getElementById('admin-new-pass').value.trim();
 const conf=document.getElementById('admin-conf-pass').value.trim();
 if(!nueva){nt('Ingrese la nueva contrasena','er');return}
 if(nueva!==conf){nt('Las contrasenas no coinciden','er');return}
-const{error}=await sb.from('gym_usuarios').update({clave:nueva}).eq('id',usuarioActual.id);
+const{error}=await sb.from('usuarios').update({clave:nueva}).eq('id',usuarioActual.id);
 if(error){nt('Error al cambiar contrasena','er');return}
 usuarioActual.clave=nueva;
 setVal('admin-new-pass','');setVal('admin-conf-pass','');
@@ -1225,3 +1225,4 @@ nt('Contrasena actualizada correctamente','ok');
 </script>
 </body>
 </html>
+
