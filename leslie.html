@@ -254,7 +254,7 @@ tr:hover{background:#f8f9fa}
 <div class="fr"><div class="fg"><label>Nueva Contrasena</label><input id="admin-new-pass" type="password" placeholder="Nueva contrasena"></div><div class="fg"><label>Confirmar Contrasena</label><input id="admin-conf-pass" type="password" placeholder="Confirmar"></div></div>
 <button class="bt p" onclick="cambiarClaveAdmin()" style="margin-top:10px">Cambiar Mi Contrasena</button>
 </div></div>
-<div class="cd"><div class="ch"><h3>Cuentas de Trabajadoras</h3></div><div class="cb">
+<div class="cd"><div class="ch"><h3>Cuentas de trabajadoras</h3></div><div class="cb">
 <table><thead><tr><th>Usuario</th><th>Nombre Asignado</th><th>Sede</th><th>Turno</th><th>Acciones</th></tr></thead><tbody id="t-usr"></tbody></table>
 </div></div>
 </div>
@@ -263,7 +263,7 @@ tr:hover{background:#f8f9fa}
 <!-- MODAL: Usuario -->
 <div class="mo" id="m-usr"><div class="md"><div class="mh"><h3>Editar Usuario</h3><button class="mx" onclick="cl('m-usr')">&times;</button></div><div class="mb">
 <div class="fg"><label>Usuario</label><input id="usr-user" readonly style="background:#f0f0f0;font-weight:600"></div>
-<div class="fg"><label>Nombre de la Trabajadora</label><input id="usr-nombre" placeholder="Ingrese el nombre"></div>
+<div class="fg"><label>Nombre de la trabajadora</label><input id="usr-nombre" placeholder="Ingrese el nombre"></div>
 <div class="fg"><label>Nueva Contrasena (dejar vacio para no cambiar)</label><input id="usr-pass" type="password" placeholder="****"></div>
 </div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-usr')">Cancelar</button><button class="bt p" onclick="guardarUsuario()">Guardar</button></div></div></div>
 <!-- MODAL: Cliente -->
@@ -1178,7 +1178,7 @@ nt('Migracion exitosa! '+total+' registros subidos a la nube','ok');
 let usuarios=[],editUsrIdx=-1;
 async function cargarUsuarios(){
 try{
-const{data,error}=await sb.from('usuarios').select('*').eq('rol','trabajador').order('id');
+const{data,error}=await sb.from('usuarios').select('*').eq('rol','trabajadora').order('id');
 if(error){nt('Error cargando usuarios','er');return}
 usuarios=data||[];
 renderUsuarios();
