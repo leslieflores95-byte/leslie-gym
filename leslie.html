@@ -344,11 +344,21 @@ document.querySelectorAll('.btn-admin').forEach(el=>{
 if(currentRol!=='admin')el.style.display='none';else el.style.display=''});
 if(currentRol==='trabajadora'){
 document.querySelectorAll('.act-btns .ad').forEach(b=>b.style.display='none');
+document.querySelector('[data-p="cli"]').style.display='none';
 const sedeUser=currentUser.sede||'';
-if(sedeUser){document.getElementById('filtro-sede-global').value=sedeUser;document.getElementById('filtro-sede-global').disabled=true}
+if(sedeUser){
+document.getElementById('filtro-sede-global').value=sedeUser;
+document.getElementById('filtro-sede-global').disabled=true;
+['mem-sede','ck-sede','ven-sede','otro-sede','cli-sede'].forEach(id=>{
+const el=document.getElementById(id);
+if(el){el.innerHTML='<option>'+sedeUser+'</option>'}
+});
+const fAsisSede=document.getElementById('f-asis-sede');
+if(fAsisSede){fAsisSede.value=sedeUser;fAsisSede.disabled=true}
 }
 }
-async function cargarTodo(){await Promise.all([cargarClientes(),cargarMembresias(),cargarCaja(),cargarAsistencias(),cargarEmpleados(),cargarProductos(),cargarVentas(),cargarUsuarios()]);actualizarDashboard()}
+}
+async function cargarTodo(){await Promise.all([cargarClientes(),cargarMembresias(),cargarCaja(),cargarAsistencias(),cargarEmpleados(),cargarProductos(),cargarVentas(),cargarUsuarios()]);actualizarDashboard();if(currentRol==='trabajadora'){document.querySelectorAll('.act-btns .ad').forEach(b=>b.style.display='none')}}
 async function cargarClientes(){
 let q=sb.from('clientes').select('*').order('nombre');
 const s=sedeGlobal();if(s)q=q.eq('sede',s);
