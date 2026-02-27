@@ -93,6 +93,7 @@ tr:hover{background:#f8f9fa}
 </style>
 </head>
 <body>
+<!-- LOGIN -->
 <div id="login-screen" class="login-bg">
 <div class="login-box">
 <h1>Leslie GYM</h1>
@@ -103,12 +104,13 @@ tr:hover{background:#f8f9fa}
 <p class="error-msg" id="login-error">Usuario o clave incorrecta</p>
 </div>
 </div>
+<!-- APP -->
 <div id="app-container" style="display:none;width:100%">
 <aside class="side" id="side">
 <h1>Leslie GYM</h1>
 <div class="sec">Principal</div>
 <a href="#" class="on" data-p="dash" data-rol="admin">Dashboard</a>
-<a href="#" data-p="cli" data-rol="admin">Clientes</a>
+<a href="#" data-p="cli">Clientes</a>
 <a href="#" data-p="mem">Membresias</a>
 <a href="#" data-p="caja" data-rol="admin">Caja / Ingresos</a>
 <div class="sec">Operaciones</div>
@@ -131,6 +133,7 @@ tr:hover{background:#f8f9fa}
 </div>
 </div>
 <div class="cnt">
+<!-- DASHBOARD -->
 <div class="pg on" id="pg-dash">
 <div class="sg">
 <div class="sc"><div class="si b">&#9824;</div><div><h3 id="d-cli">0</h3><p>Clientes</p></div></div>
@@ -143,19 +146,22 @@ tr:hover{background:#f8f9fa}
 <div class="cd"><div class="ch"><h3>Membresias por vencer</h3></div><div class="cb">
 <table><thead><tr><th>Cliente</th><th>Plan</th><th>Sede</th><th>Vence</th><th>Accion</th></tr></thead><tbody id="t-dash-venc"></tbody></table></div></div>
 </div>
+<!-- CLIENTES -->
 <div class="pg" id="pg-cli">
-<div class="sb"><input placeholder="Buscar por nombre..." oninput="ft('t-cli',this.value)"><button class="bt p" onclick="abrirModalCli()">+ Nuevo Cliente</button></div>
+<div class="sb"><input placeholder="Buscar por nombre..." oninput="ft('t-cli',this.value)"><button class="bt p btn-admin" onclick="abrirModalCli()">+ Nuevo Cliente</button></div>
 <div class="cd"><div class="cb">
 <table><thead><tr><th>Nombre Completo</th><th>Telefono</th><th>Sede</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="t-cli"></tbody></table></div></div>
 </div>
+<!-- MEMBRESIAS -->
 <div class="pg" id="pg-mem">
 <div class="sb"><input placeholder="Buscar membresia..." oninput="ft('t-mem',this.value)"><button class="bt p" onclick="abrirModalMem()">+ Nueva Membresia</button></div>
 <div class="cd"><div class="cb">
-<table><thead><tr><th>Cliente</th><th>Plan</th><th>Sede</th><th>Inicio</th><th>Fin</th><th>Metodo Pago</th><th>Comprobante</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="t-mem"></tbody></table></div></div>
+<table><thead><tr><th>Cliente</th><th>Plan</th><th>Sede</th><th>Inicio</th><th>Fin</th><th>Metodo Pago</th><th>Comprobante</th><th>Estado</th><th class="col-clases-mem" style="display:none">Clases</th><th>Acciones</th></tr></thead><tbody id="t-mem"></tbody></table></div></div>
 </div>
+<!-- CAJA -->
 <div class="pg" id="pg-caja">
 <div class="sg">
-<div class="sc"><div class="si g">S/</div><div><h3 id="caja-total">0</h3><p>Total del mes</p></div></div>
+<div class="sc"><div class="si g">S/</div><div><h3 id="caja-total">0</h3><p id="caja-total-label">Total del mes</p></div></div>
 <div class="sc"><div class="si b">&#9829;</div><div><h3 id="caja-mem">0</h3><p>Por membresias</p></div></div>
 <div class="sc"><div class="si p">&#9733;</div><div><h3 id="caja-tien">0</h3><p>Por tienda</p></div></div>
 <div class="sc"><div class="si y">&#9654;</div><div><h3 id="caja-otros">0</h3><p>Otros cobros</p></div></div>
@@ -177,44 +183,55 @@ tr:hover{background:#f8f9fa}
 <div class="rs-row"><span>Otros cobros</span><span id="rs-ves-otr">S/ 0</span></div>
 <div class="rs-row"><span>Total Villa El Salvador</span><span id="rs-ves-tot">S/ 0</span></div></div>
 </div>
-<div class="filter-row">
+<div class="filter-row" style="flex-wrap:wrap;gap:6px">
+<div style="display:flex;gap:4px;margin-right:8px">
+<button class="bt" id="btn-periodo-hoy" style="padding:6px 12px;font-size:12px" onclick="setPeriodoCaja('hoy')">Hoy</button>
+<button class="bt" id="btn-periodo-semana" style="padding:6px 12px;font-size:12px" onclick="setPeriodoCaja('semana')">Semana</button>
+<button class="bt" id="btn-periodo-mes" style="padding:6px 12px;font-size:12px;background:var(--pri);color:#fff" onclick="setPeriodoCaja('mes')">Mes</button>
+<button class="bt" id="btn-periodo-todo" style="padding:6px 12px;font-size:12px" onclick="setPeriodoCaja('todo')">Todo</button>
+</div>
 <select id="f-sede" onchange="filtrarCaja()"><option value="">Todas las sedes</option><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select>
+<select id="f-turno" onchange="filtrarCaja()"><option value="">Todos los turnos</option><option value="M">Manana</option><option value="T">Tarde</option></select>
+<select id="f-usuario" onchange="filtrarCaja()"><option value="">Todos los usuarios</option></select>
 <select id="f-tipo" onchange="filtrarCaja()"><option value="">Todos los tipos</option><option>Membresia</option><option>Tienda</option><option>Otro</option></select>
 <select id="f-metodo" onchange="filtrarCaja()"><option value="">Todos los metodos</option><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Tarjeta</option><option>Transferencia</option></select>
-<input type="date" id="f-desde" onchange="filtrarCaja()" title="Desde">
-<input type="date" id="f-hasta" onchange="filtrarCaja()" title="Hasta">
+<input type="date" id="f-desde" onchange="setPeriodoCaja('custom');filtrarCaja()" title="Desde">
+<input type="date" id="f-hasta" onchange="setPeriodoCaja('custom');filtrarCaja()" title="Hasta">
 <button class="bt p" onclick="abrirModalOtro()">+ Otro Cobro</button>
 </div>
 <div class="sede-card"><div class="sede-head" onclick="toggleSede('body-lurin')"><h3>Lurin</h3><div class="sede-totals"><span>Memb: <span id="st-lur-mem">S/ 0</span></span><span>Tienda: <span id="st-lur-tien">S/ 0</span></span><span>Otros: <span id="st-lur-otr">S/ 0</span></span><span style="color:var(--pri)">Total: <span id="st-lur-tot">S/ 0</span></span></div></div>
-<div class="sede-body" id="body-lurin"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Acciones</th></tr></thead><tbody id="t-caja-lurin"></tbody></table></div></div>
+<div class="sede-body" id="body-lurin"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Usuario</th><th>Acciones</th></tr></thead><tbody id="t-caja-lurin"></tbody></table></div></div>
 <div class="sede-card"><div class="sede-head" onclick="toggleSede('body-jg')"><h3>Jose Galvez</h3><div class="sede-totals"><span>Memb: <span id="st-jg-mem">S/ 0</span></span><span>Tienda: <span id="st-jg-tien">S/ 0</span></span><span>Otros: <span id="st-jg-otr">S/ 0</span></span><span style="color:var(--pri)">Total: <span id="st-jg-tot">S/ 0</span></span></div></div>
-<div class="sede-body" id="body-jg"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Acciones</th></tr></thead><tbody id="t-caja-jg"></tbody></table></div></div>
+<div class="sede-body" id="body-jg"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Usuario</th><th>Acciones</th></tr></thead><tbody id="t-caja-jg"></tbody></table></div></div>
 <div class="sede-card"><div class="sede-head" onclick="toggleSede('body-ves')"><h3>Villa El Salvador</h3><div class="sede-totals"><span>Memb: <span id="st-ves-mem">S/ 0</span></span><span>Tienda: <span id="st-ves-tien">S/ 0</span></span><span>Otros: <span id="st-ves-otr">S/ 0</span></span><span style="color:var(--pri)">Total: <span id="st-ves-tot">S/ 0</span></span></div></div>
-<div class="sede-body" id="body-ves"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Acciones</th></tr></thead><tbody id="t-caja-ves"></tbody></table></div></div>
+<div class="sede-body" id="body-ves"><table><thead><tr><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Usuario</th><th>Acciones</th></tr></thead><tbody id="t-caja-ves"></tbody></table></div></div>
 <div class="cd"><div class="ch"><h3>Historial General - Todas las Sedes</h3></div><div class="cb">
-<table><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Sede</th><th>Acciones</th></tr></thead><tbody id="t-caja-all"></tbody></table></div></div>
+<table><thead><tr><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Metodo</th><th>Comprobante</th><th>Usuario</th><th>Sede</th><th>Acciones</th></tr></thead><tbody id="t-caja-all"></tbody></table></div></div>
 </div>
+<!-- ASISTENCIA -->
 <div class="pg" id="pg-asis">
-<div class="sg" id="asis-stats">
+<div class="sg">
 <div class="sc"><div class="si g">&#10004;</div><div><h3 id="asis-hoy">0</h3><p>Asistencias hoy</p></div></div>
-<div class="sc" id="asis-total-card"><div class="si b">&#9632;</div><div><h3 id="asis-total">0</h3><p>Total asistencias</p></div></div>
+<div class="sc"><div class="si b">&#9632;</div><div><h3 id="asis-total">0</h3><p>Total asistencias</p></div></div>
 </div>
-<div class="sb"><input placeholder="Nombre del cliente..." id="ck" list="dl-asis"><select id="ck-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select><button class="bt g" onclick="registrarAsistencia()">Registrar Ingreso</button></div>
-<datalist id="dl-asis"></datalist>
-<div class="cd"><div class="ch"><h3>Asistencias de hoy</h3></div><div class="cb"><table><thead><tr id="thead-asis-hoy"><th>Cliente</th><th>Sede</th><th>Clases acumuladas</th><th>Acciones</th></tr></thead><tbody id="t-asis-hoy"></tbody></table></div></div>
-<div class="cd" id="card-asis-hist"><div class="ch"><h3>Historial de asistencias</h3></div><div class="cb">
+<div class="sb"><input placeholder="Nombre del cliente..." id="ck"><select id="ck-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select><button class="bt g" onclick="registrarAsistencia()">Registrar Ingreso</button></div>
+<div class="cd"><div class="ch"><h3>Asistencias de hoy</h3></div><div class="cb"><table><thead><tr><th>Cliente</th><th>Sede</th><th>Clases acumuladas</th><th>Acciones</th></tr></thead><tbody id="t-asis-hoy"></tbody></table></div></div>
+<div class="cd"><div class="ch"><h3>Historial de asistencias</h3></div><div class="cb">
 <div class="filter-row" style="margin-bottom:10px"><input placeholder="Buscar cliente..." oninput="ft('t-asis-all',this.value)"><select id="f-asis-sede" onchange="renderAsistencias()"><option value="">Todas las sedes</option><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div>
 <table><thead><tr><th>Fecha</th><th>Cliente</th><th>Sede</th><th>Clase #</th><th>Acciones</th></tr></thead><tbody id="t-asis-all"></tbody></table></div></div>
 </div>
+<!-- EMPLEADOS -->
 <div class="pg" id="pg-ent">
 <div class="sb"><input placeholder="Buscar empleado..." oninput="ft('t-ent',this.value)"><button class="bt p" onclick="abrirModalEmp()">+ Nuevo Empleado</button></div>
 <div class="cd"><div class="ch"><h3>Empleados</h3></div><div class="cb"><table><thead><tr><th>Nombre</th><th>Cargo</th><th>Sede</th><th>Telefono</th><th>Sueldo</th><th>Acciones</th></tr></thead><tbody id="t-ent"></tbody></table></div></div>
 </div>
+<!-- TIENDA -->
 <div class="pg" id="pg-tien">
 <div class="sb"><input placeholder="Buscar producto..." oninput="ft('t-prod',this.value);ft('t-vent',this.value)"><button class="bt p btn-admin" onclick="abrirModalProd()">+ Registrar Producto</button><button class="bt i btn-admin" onclick="op('m-stock')">+ Anadir Stock</button><button class="bt g" onclick="op('m-ven')">+ Nueva Venta</button></div>
-<div class="cd"><div class="ch"><h3>Almacen - Stock disponible</h3></div><div class="cb"><table><thead><tr id="thead-prod"><th>Fecha Registro</th><th>Producto</th><th>Categoria</th><th>Precio</th><th>Lurin</th><th>Jose Galvez</th><th>Villa El Salvador</th><th>Acciones</th></tr></thead><tbody id="t-prod"></tbody></table></div></div>
-<div class="cd"><div class="ch"><h3>Ventas realizadas</h3></div><div class="cb"><table><thead><tr id="thead-vent"><th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Total</th><th>Sede</th><th>Metodo</th><th>Acciones</th></tr></thead><tbody id="t-vent"></tbody></table></div></div>
+<div class="cd"><div class="ch"><h3>Almacen - Stock disponible</h3></div><div class="cb"><table><thead><tr><th>Fecha Registro</th><th>Producto</th><th>Categoria</th><th>Precio</th><th>Lurin</th><th>Jose Galvez</th><th>Villa El Salvador</th><th>Acciones</th></tr></thead><tbody id="t-prod"></tbody></table></div></div>
+<div class="cd"><div class="ch"><h3>Ventas realizadas</h3></div><div class="cb"><table><thead><tr><th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Total</th><th>Sede</th><th>Metodo</th><th>Acciones</th></tr></thead><tbody id="t-vent"></tbody></table></div></div>
 </div>
+<!-- BACKUP -->
 <div class="pg" id="pg-back">
 <div class="sg">
 <div class="sc"><div class="si g">&#128190;</div><div><h3 id="bk-total">0</h3><p>Registros totales</p></div></div>
@@ -231,6 +248,7 @@ tr:hover{background:#f8f9fa}
 <p style="font-size:.85rem;color:#666;margin-bottom:14px">Si tienes datos guardados en este navegador, sube todo a Supabase con un clic.</p>
 <button class="bt p" onclick="migrarASupabase()" style="font-size:.9rem;padding:10px 24px">Subir datos a la nube</button></div></div>
 </div>
+<!-- USUARIOS -->
 <div class="pg" id="pg-usr">
 <div class="cd"><div class="ch"><h3>Mi Cuenta (Admin)</h3></div><div class="cb">
 <div class="fr"><div class="fg"><label>Nueva Contrasena</label><input id="admin-new-pass" type="password" placeholder="Nueva contrasena"></div><div class="fg"><label>Confirmar Contrasena</label><input id="admin-conf-pass" type="password" placeholder="Confirmar"></div></div>
@@ -242,19 +260,22 @@ tr:hover{background:#f8f9fa}
 </div>
 </div></div>
 </div>
+<!-- MODAL: Usuario -->
 <div class="mo" id="m-usr"><div class="md"><div class="mh"><h3>Editar Usuario</h3><button class="mx" onclick="cl('m-usr')">&times;</button></div><div class="mb">
 <div class="fg"><label>Usuario</label><input id="usr-user" readonly style="background:#f0f0f0;font-weight:600"></div>
 <div class="fg"><label>Nombre de la Trabajadora</label><input id="usr-nombre" placeholder="Ingrese el nombre"></div>
 <div class="fg"><label>Nueva Contrasena (dejar vacio para no cambiar)</label><input id="usr-pass" type="password" placeholder="****"></div>
 </div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-usr')">Cancelar</button><button class="bt p" onclick="guardarUsuario()">Guardar</button></div></div></div>
+<!-- MODAL: Cliente -->
 <div class="mo" id="m-cli"><div class="md"><div class="mh"><h3 id="m-cli-title">Nuevo Cliente</h3><button class="mx" onclick="cl('m-cli')">&times;</button></div><div class="mb">
 <div class="fg"><label>Nombre Completo</label><input id="cli-nom" placeholder="Nombre completo del cliente"></div>
 <div class="fg"><label>Genero</label><select id="cli-gen"><option>Masculino</option><option>Femenino</option></select></div>
 <div class="fr"><div class="fg"><label>Telefono</label><input id="cli-tel" placeholder="987654321"></div><div class="fg"><label>Email</label><input id="cli-email" placeholder="correo@mail.com"></div></div>
 <div class="fr"><div class="fg"><label>Nacimiento</label><input type="date" id="cli-nac"></div><div class="fg"><label>Sede</label><select id="cli-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div></div>
 </div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-cli')">Cancelar</button><button class="bt p" onclick="guardarCliente()">Guardar</button></div></div></div>
+<!-- MODAL: Membresia -->
 <div class="mo" id="m-mem"><div class="md"><div class="mh"><h3 id="m-mem-title">Nueva Membresia</h3><button class="mx" onclick="cl('m-mem')">&times;</button></div><div class="mb">
-<div class="fg"><label>Cliente</label><input id="mem-cli" placeholder="Nombre del cliente..."></div>
+<div class="fg"><label>Cliente</label><input id="mem-cli" placeholder="Buscar por nombre..."></div>
 <div class="fg"><label>Plan</label><select id="mem-plan">
 <option value="6">Por Clase - S/ 6</option>
 <option value="60">Mensual Interdiario - S/ 60</option>
@@ -270,6 +291,7 @@ tr:hover{background:#f8f9fa}
 <div class="fr"><div class="fg"><label>Metodo de Pago</label><select id="mem-metodo"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Tarjeta</option><option>Transferencia</option></select></div><div class="fg"><label>Comprobante</label><select id="mem-comp"><option>Boleta</option><option>Factura</option><option>Ninguno</option></select></div></div>
 </div>
 </div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-mem')">Cancelar</button><button class="bt p" onclick="guardarMembresia()">Guardar</button></div></div></div>
+<!-- MODAL: Otro Cobro -->
 <div class="mo" id="m-otro"><div class="md"><div class="mh"><h3 id="m-otro-title">Registrar Otro Cobro</h3><button class="mx" onclick="cl('m-otro')">&times;</button></div><div class="mb">
 <div class="fg"><label>Cliente</label><input id="otro-cli" placeholder="Nombre del cliente"></div>
 <div class="fg" id="otro-tipo-wrap" style="display:none"><label>Tipo</label><input id="otro-tipo-show" readonly style="background:#f0f0f0;font-weight:600"></div>
@@ -282,364 +304,924 @@ tr:hover{background:#f8f9fa}
 <div class="fr"><div class="fg"><label>Sede</label><select id="otro-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Metodo de Pago</label><select id="otro-metodo"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Tarjeta</option><option>Transferencia</option></select></div></div>
 <div class="fg"><label>Comprobante</label><select id="otro-comp"><option>Boleta</option><option>Factura</option><option>Ninguno</option></select></div>
 </div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-otro')">Cancelar</button><button class="bt p" onclick="guardarOtroCobro()">Guardar</button></div></div></div>
-<div class="mo" id="m-emp"><div class="md"><div class="mh"><h3 id="m-emp-title">Nuevo Empleado</h3><button class="mx" onclick="cl('m-emp')">&times;</button></div><div class="mb">
-<div class="fg"><label>Nombre Completo</label><input id="emp-nom" placeholder="Nombre del empleado"></div>
-<div class="fr"><div class="fg"><label>Cargo</label><select id="emp-cargo"><option>Entrenador</option><option>Recepcionista</option><option>Limpieza</option><option>Administrador</option></select></div><div class="fg"><label>Sede</label><select id="emp-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div></div>
-<div class="fr"><div class="fg"><label>Telefono</label><input id="emp-tel" placeholder="987654321"></div><div class="fg"><label>Sueldo (S/)</label><input type="number" id="emp-sueldo" placeholder="0.00"></div></div>
-</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-emp')">Cancelar</button><button class="bt p" onclick="guardarEmpleado()">Guardar</button></div></div></div>
-<div class="mo" id="m-prod"><div class="md"><div class="mh"><h3>Registrar Producto</h3><button class="mx" onclick="cl('m-prod')">&times;</button></div><div class="mb">
-<div class="fg"><label>Nombre del Producto</label><input id="prod-nom" placeholder="Nombre del producto"></div>
-<div class="fr"><div class="fg"><label>Categoria</label><select id="prod-cat"><option>Suplementos</option><option>Ropa</option><option>Accesorios</option><option>Bebidas</option><option>Snacks</option><option>Otro</option></select></div><div class="fg"><label>Precio (S/)</label><input type="number" id="prod-precio" placeholder="0.00"></div></div>
-<div class="fr"><div class="fg"><label>Stock Lurin</label><input type="number" id="prod-s1" value="0"></div><div class="fg"><label>Stock Jose Galvez</label><input type="number" id="prod-s2" value="0"></div></div>
-<div class="fg"><label>Stock Villa El Salvador</label><input type="number" id="prod-s3" value="0"></div>
+<!-- MODAL: Nueva Venta -->
+<div class="mo" id="m-ven"><div class="md"><div class="mh"><h3>Nueva Venta</h3><button class="mx" onclick="cl('m-ven')">&times;</button></div><div class="mb">
+<div class="fg"><label>Cliente (opcional)</label><input id="ven-cli" placeholder="Nombre del cliente"></div>
+<div class="fg"><label>Sede</label><select id="ven-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div>
+<div class="fr"><div class="fg"><label>Producto</label><select id="ven-prod"><option value="">-- Primero registre productos --</option></select></div><div class="fg"><label>Cantidad</label><input type="number" id="ven-cant" value="1" min="1"></div></div>
+<div class="fg" id="ven-stock-info" style="font-size:.78rem;color:#888"></div>
+<div class="fr"><div class="fg"><label>Metodo</label><select id="ven-metodo"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Tarjeta</option></select></div><div class="fg"><label>Comprobante</label><select id="ven-comp"><option>Boleta</option><option>Factura</option><option>Ninguno</option></select></div></div>
+</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-ven')">Cancelar</button><button class="bt p" onclick="guardarVenta()">Vender</button></div></div></div>
+<!-- MODAL: Registrar Producto -->
+<div class="mo" id="m-prod"><div class="md"><div class="mh"><h3 id="m-prod-title">Registrar Producto</h3><button class="mx" onclick="cl('m-prod')">&times;</button></div><div class="mb">
+<div class="fg"><label>Producto</label><input id="prod-nom" placeholder="Nombre del producto"></div>
+<div class="fr"><div class="fg"><label>Categoria</label><select id="prod-cat"><option>Suplementos</option><option>Bebidas</option><option>Accesorios</option><option>Ropa</option></select></div><div class="fg"><label>Precio (S/)</label><input type="number" id="prod-precio" placeholder="0.00"></div></div>
+<div class="fg"><label>Sede</label><select id="prod-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div>
+<div class="fg"><label>Cantidad en stock</label><input type="number" id="prod-stock" placeholder="0" min="0"></div>
 </div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-prod')">Cancelar</button><button class="bt p" onclick="guardarProducto()">Guardar</button></div></div></div>
+<!-- MODAL: Anadir Stock -->
 <div class="mo" id="m-stock"><div class="md"><div class="mh"><h3>Anadir Stock</h3><button class="mx" onclick="cl('m-stock')">&times;</button></div><div class="mb">
 <div class="fg"><label>Producto</label><select id="stock-prod"></select></div>
-<div class="fr"><div class="fg"><label>Sede</label><select id="stock-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Cantidad</label><input type="number" id="stock-cant" value="1"></div></div>
-</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-stock')">Cancelar</button><button class="bt p" onclick="agregarStock()">Agregar</button></div></div></div>
-<div class="mo" id="m-ven"><div class="md"><div class="mh"><h3>Nueva Venta</h3><button class="mx" onclick="cl('m-ven')">&times;</button></div><div class="mb">
-<div class="fg"><label>Producto</label><select id="ven-prod"></select></div>
-<div class="fr"><div class="fg"><label>Sede</label><select id="ven-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Cantidad</label><input type="number" id="ven-cant" value="1"></div></div>
-<div class="fg"><label>Metodo de Pago</label><select id="ven-metodo"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Tarjeta</option><option>Transferencia</option></select></div>
-</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-ven')">Cancelar</button><button class="bt g" onclick="registrarVenta()">Vender</button></div></div></div>
-<div class="nt" id="nt"></div>
+<div class="fr"><div class="fg"><label>Sede</label><select id="stock-sede" onchange="cargarProductosStock()"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Cantidad a anadir</label><input type="number" id="stock-cant" placeholder="0" min="1"></div></div>
+<div class="fg" id="stock-info" style="font-size:.78rem;color:#888"></div>
+</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-stock')">Cancelar</button><button class="bt i" onclick="guardarStock()">Anadir</button></div></div></div>
+<!-- MODAL: Empleado -->
+<div class="mo" id="m-ent"><div class="md"><div class="mh"><h3 id="m-ent-title">Nuevo Empleado</h3><button class="mx" onclick="cl('m-ent')">&times;</button></div><div class="mb">
+<div class="fg"><label>Nombre Completo</label><input id="emp-nom" placeholder="Nombre del empleado"></div>
+<div class="fg"><label>Cargo</label><select id="emp-cargo" onchange="document.getElementById('cargo-otro').style.display=this.value==='Otros'?'block':'none'"><option>Entrenador</option><option>Limpieza</option><option>Otros</option></select></div>
+<div class="fg" id="cargo-otro" style="display:none"><label>Especificar cargo</label><input id="emp-cargo-otro" placeholder="Escribir cargo..."></div>
+<div class="fr"><div class="fg"><label>Sede</label><select id="emp-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Telefono</label><input id="emp-tel" placeholder="976543210"></div></div>
+<div class="fg"><label>Sueldo (S/)</label><input type="number" id="emp-sueldo" placeholder="0.00"></div>
+</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-ent')">Cancelar</button><button class="bt p" onclick="guardarEmpleado()">Guardar</button></div></div></div>
+<!-- MODAL: Editar Asistencia -->
+<div class="mo" id="m-asis-edit"><div class="md"><div class="mh"><h3>Editar Asistencia</h3><button class="mx" onclick="cl('m-asis-edit')">&times;</button></div><div class="mb">
+<div class="fg"><label>Cliente</label><input id="asis-edit-cli"></div>
+<div class="fr"><div class="fg"><label>Sede</label><select id="asis-edit-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Fecha</label><input type="date" id="asis-edit-fecha"></div></div>
+</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-asis-edit')">Cancelar</button><button class="bt p" onclick="guardarEditAsistencia()">Guardar</button></div></div></div>
+<!-- MODAL: Editar Venta -->
+<div class="mo" id="m-vent-edit"><div class="md"><div class="mh"><h3>Editar Venta</h3><button class="mx" onclick="cl('m-vent-edit')">&times;</button></div><div class="mb">
+<div class="fg"><label>Producto</label><input id="vent-edit-prod"></div>
+<div class="fr"><div class="fg"><label>Cantidad</label><input type="number" id="vent-edit-cant" min="1"></div><div class="fg"><label>Precio Unit. (S/)</label><input type="number" id="vent-edit-precio"></div></div>
+<div class="fr"><div class="fg"><label>Sede</label><select id="vent-edit-sede"><option>Lurin</option><option>Jose Galvez</option><option>Villa El Salvador</option></select></div><div class="fg"><label>Metodo</label><select id="vent-edit-metodo"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Tarjeta</option></select></div></div>
+<div class="fg"><label>Fecha</label><input type="date" id="vent-edit-fecha"></div>
+</div><div class="mf"><button class="bt" style="background:#ccc" onclick="cl('m-vent-edit')">Cancelar</button><button class="bt p" onclick="guardarEditVenta()">Guardar</button></div></div></div>
+<div class="nt" id="noti"></div>
 <script>
-const SB_URL='https://fydaxaugjhbzmsedbofs.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5ZGF4YXVnamhiem1zZWRib2ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzI1MDUsImV4cCI6MjA4NzY0ODUwNX0.96SmVzV7KbK17hmK3iyO0YLV37tUY2hWpmPa7-yU8XY';
-const sb=supabase.createClient(SB_URL,SB_KEY);
-let currentUser=null;
-let currentRol='admin';
-let editandoCliId=null,editandoMemId=null,editandoOtroId=null,editandoEmpId=null;
-const PLANES={'6':'Por Clase','60':'Mensual Interdiario','100':'Mensual Diario','110':'Bimestral Interdiario','180':'Bimestral Diario','150':'Trimestral Interdiario','240':'Trimestral Diario'};
-const PLAN_DIAS={'6':0,'60':30,'100':30,'110':60,'180':60,'150':90,'240':90};
-function getPlanNombre(v){return PLANES[String(v)]||'Plan S/'+v}
-function getPlanDias(v){return PLAN_DIAS[String(v)]||30}
-function hoy(){return new Date().toISOString().split('T')[0]}
-function fmtFecha(f){if(!f)return'-';const d=new Date(f+'T00:00:00');return d.toLocaleDateString('es-PE')}
-function fmtMonto(m){return'S/ '+parseFloat(m||0).toFixed(2)}
-function nt(msg,tipo='ok'){const n=document.getElementById('nt');n.textContent=msg;n.className='nt show '+tipo;setTimeout(()=>n.classList.remove('show'),3000)}
-function op(id){document.getElementById(id).classList.add('show')}
-function cl(id){document.getElementById(id).classList.remove('show')}
-function ft(tid,v){const rows=document.getElementById(tid).querySelectorAll('tr:not(.week-sep)');v=v.toLowerCase();rows.forEach(r=>r.style.display=r.textContent.toLowerCase().includes(v)?'':'none')}
-function toggleSede(id){document.getElementById(id).classList.toggle('hidden')}
-function sedeGlobal(){return document.getElementById('filtro-sede-global').value}
-function aplicarFiltroGlobal(){cargarTodo()}
-document.querySelectorAll('.side a').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const p=a.dataset.p;if(!p)return;document.querySelectorAll('.side a').forEach(x=>x.classList.remove('on'));a.classList.add('on');document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));document.getElementById('pg-'+p).classList.add('on');document.getElementById('pt').textContent=a.textContent.trim();document.getElementById('side').classList.remove('open')})});
+const SUPABASE_URL='https://fydaxaugjhbzmsedbofs.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5ZGF4YXVnamhiem1zZWRib2ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNzI1MDUsImV4cCI6MjA4NzY0ODUwNX0.96SmVzV7KbK17hmK3iyO0YLV37tUY2hWpmPa7-yU8XY';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let clientes=[],caja=[],almacen=[],membresias=[],ventas=[],asistencias=[],empleados=[];
+let editCliIdx=-1,editMemIdx=-1,editCajaIdx=-1,editAsisIdx=-1,editEmpIdx=-1,editProdIdx=-1,editVentIdx=-1;
+let usuarioActual=null;
 async function iniciarSesion(){
-const u=document.getElementById('login-user').value.trim().toLowerCase();
-const p=document.getElementById('login-pass').value.trim();
-if(!u||!p){document.getElementById('login-error').style.display='block';return}
-const{data}=await sb.from('usuarios').select('*').eq('usuario',u).eq('clave',p).single();
-if(!data){document.getElementById('login-error').style.display='block';return}
-currentUser=data;currentRol=data.rol||'trabajadora';
+const user=document.getElementById('login-user').value.trim();
+const pass=document.getElementById('login-pass').value.trim();
+if(!user||!pass){document.getElementById('login-error').style.display='block';document.getElementById('login-error').textContent='Ingrese usuario y clave';return}
+document.getElementById('login-error').style.display='none';
+try{
+const{data,error}=await sb.from('gym_usuarios').select('*').eq('usuario',user).eq('clave',pass).single();
+if(error||!data){document.getElementById('login-error').style.display='block';document.getElementById('login-error').textContent='Usuario o clave incorrecta';return}
+usuarioActual=data;
 document.getElementById('login-screen').style.display='none';
 document.getElementById('app-container').style.display='flex';
+if(data.rol==='admin'){
 document.getElementById('user-name').textContent=data.nombre||data.usuario;
-aplicarPermisos();cargarTodo();
+}else{
+const displayName=data.nombre||data.usuario;
+const turnoInfo=data.turno?' ('+data.turno+')':'';
+document.getElementById('user-name').textContent=displayName+turnoInfo;
 }
-function cerrarSesion(){currentUser=null;currentRol='admin';document.getElementById('app-container').style.display='none';document.getElementById('login-screen').style.display='flex';document.getElementById('login-user').value='';document.getElementById('login-pass').value='';document.getElementById('login-error').style.display='none'}
-function aplicarPermisos(){
-document.querySelectorAll('[data-rol]').forEach(el=>{
-if(currentRol!=='admin')el.style.display='none';else el.style.display=''});
-document.querySelectorAll('.btn-admin').forEach(el=>{
-if(currentRol!=='admin')el.style.display='none';else el.style.display=''});
-if(currentRol==='trabajadora'){
-document.querySelectorAll('.act-btns .ad').forEach(b=>b.style.display='none');
-const sedeUser=currentUser.sede||'';
-if(sedeUser){
-document.getElementById('filtro-sede-global').value=sedeUser;
-document.getElementById('filtro-sede-global').disabled=true;
-['mem-sede','ck-sede','ven-sede','otro-sede','cli-sede'].forEach(id=>{
-const el=document.getElementById(id);
-if(el){el.innerHTML='<option>'+sedeUser+'</option>'}
-});
-const fAsisSede=document.getElementById('f-asis-sede');
-if(fAsisSede){fAsisSede.value=sedeUser;fAsisSede.disabled=true}
+aplicarRol();
+await cargarDatos();
+if(data.rol==='admin')await cargarUsuarios();
+}catch(e){document.getElementById('login-error').style.display='block';document.getElementById('login-error').textContent='Error de conexion. Intente de nuevo.'}
 }
-document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+function cerrarSesion(){
+usuarioActual=null;
+document.getElementById('app-container').style.display='none';
+document.getElementById('login-screen').style.display='flex';
+document.getElementById('login-user').value='';
+document.getElementById('login-pass').value='';
+}
+function aplicarRol(){
+if(!usuarioActual)return;
+const esAdmin=usuarioActual.rol==='admin';
+document.querySelectorAll('.side a[data-rol="admin"]').forEach(a=>{a.style.display=esAdmin?'block':'none'});
+document.querySelectorAll('.btn-admin').forEach(b=>{b.style.display=esAdmin?'inline-block':'none'});
+if(!esAdmin){
+const sede=usuarioActual.sede;
+if(sede){
+const fg=document.getElementById('filtro-sede-global');fg.value=sede;fg.disabled=true;
+const sedeFields=['cli-sede','mem-sede','otro-sede','ven-sede','prod-sede','stock-sede','ck-sede','emp-sede','f-sede','f-asis-sede'];
+sedeFields.forEach(id=>{const el=document.getElementById(id);if(el){el.value=sede;el.disabled=true}});
+}
+const pgActual=document.querySelector('.pg.on');
+if(pgActual&&(pgActual.id==='pg-dash'||pgActual.id==='pg-caja'||pgActual.id==='pg-ent'||pgActual.id==='pg-back'||pgActual.id==='pg-usr')){
+document.querySelectorAll('.pg').forEach(pg=>pg.classList.remove('on'));
 document.getElementById('pg-mem').classList.add('on');
 document.getElementById('pt').textContent='Membresias';
-document.querySelectorAll('.side a').forEach(x=>x.classList.remove('on'));
-const memLink=document.querySelector('[data-p="mem"]');if(memLink)memLink.classList.add('on');
-document.getElementById('asis-total-card').style.display='none';
-document.getElementById('card-asis-hist').style.display='none';
+document.querySelectorAll('.side a').forEach(l=>l.classList.remove('on'));
+document.querySelector('.side a[data-p="mem"]').classList.add('on');
 }
-}
-async function cargarTodo(){
-await Promise.all([cargarClientes(),cargarMembresias(),cargarCaja(),cargarAsistencias(),cargarEmpleados(),cargarProductos(),cargarVentas(),cargarUsuarios()]);
-actualizarDashboard();
-if(currentRol==='trabajadora'){
-document.querySelectorAll('.act-btns .ad').forEach(b=>b.style.display='none');
-cargarAutocompletado();
-}
-}
-async function cargarAutocompletado(){
-const sedeUser=currentUser?currentUser.sede:'';
-const hoyStr=hoy();
-let q=sb.from('membresias').select('cliente_nombre,fecha_fin');
-if(sedeUser)q=q.eq('sede',sedeUser);
-const{data}=await q;if(!data)return;
-const activas=data.filter(m=>m.fecha_fin&&new Date(m.fecha_fin)>=new Date(hoyStr));
-const nombres=[...new Set(activas.map(m=>m.cliente_nombre).filter(n=>n))];
-const dl=document.getElementById('dl-asis');
-dl.innerHTML='';
-nombres.forEach(n=>{dl.innerHTML+='<option value="'+n+'">'});
-}
-async function cargarClientes(){
-let q=sb.from('clientes').select('*').order('nombre');
-const s=sedeGlobal();if(s)q=q.eq('sede',s);
-const{data}=await q;if(!data)return;
-const tb=document.getElementById('t-cli');tb.innerHTML='';
-data.forEach(c=>{
-const st=c.estado||'Activo';
-const bgc=st==='Activo'?'ok':'no';
-tb.innerHTML+=`<tr><td>${c.nombre||'-'}</td><td>${c.telefono||'-'}</td><td>${c.sede||'-'}</td><td><span class="bg ${bgc}">${st}</span></td><td><div class="act-btns"><button class="ae" onclick="editarCliente('${c.id}')">Editar</button><button class="ad" onclick="eliminarCliente('${c.id}')">Eliminar</button></div></td></tr>`})
-}
-async function cargarMembresias(){
-let q=sb.from('membresias').select('*').order('fecha_inicio',{ascending:false});
-const s=sedeGlobal();if(s)q=q.eq('sede',s);
-const{data}=await q;if(!data)return;
-const tb=document.getElementById('t-mem');tb.innerHTML='';
-const thead=tb.closest('table').querySelector('thead tr');
-const hoyStr=hoy();
-const hoyF=new Date(hoyStr);
-const filtrada=currentRol==='trabajadora'?data.filter(m=>m.fecha_inicio===hoyStr):data;
-if(currentRol==='trabajadora'){
-thead.innerHTML='<th>Cliente</th><th>Plan</th><th>Sede</th><th>Inicio</th><th>Fin</th><th>Estado</th>';
-filtrada.forEach(m=>{
-const finF=new Date(m.fecha_fin);
-let st,bgc;if(finF<hoyF){st='Vencida';bgc='no'}else if((finF-hoyF)/(86400000)<=7){st='Por vencer';bgc='oc'}else{st='Activa';bgc='ok'}
-tb.innerHTML+=`<tr><td>${m.cliente_nombre||'-'}</td><td>${getPlanNombre(m.plan)}</td><td>${m.sede||'-'}</td><td>${fmtFecha(m.fecha_inicio)}</td><td>${fmtFecha(m.fecha_fin)}</td><td><span class="bg ${bgc}">${st}</span></td></tr>`})
 }else{
-thead.innerHTML='<th>Cliente</th><th>Plan</th><th>Sede</th><th>Inicio</th><th>Fin</th><th>Metodo Pago</th><th>Comprobante</th><th>Estado</th><th>Acciones</th>';
-filtrada.forEach(m=>{
-const finF=new Date(m.fecha_fin);
-let st,bgc;if(finF<hoyF){st='Vencida';bgc='no'}else if((finF-hoyF)/(86400000)<=7){st='Por vencer';bgc='oc'}else{st='Activa';bgc='ok'}
-tb.innerHTML+=`<tr><td>${m.cliente_nombre||'-'}</td><td>${getPlanNombre(m.plan)}</td><td>${m.sede||'-'}</td><td>${fmtFecha(m.fecha_inicio)}</td><td>${fmtFecha(m.fecha_fin)}</td><td>${m.metodo_pago||'-'}</td><td>${m.comprobante||'-'}</td><td><span class="bg ${bgc}">${st}</span></td><td><div class="act-btns"><button class="ae" onclick="editarMembresia('${m.id}')">Editar</button><button class="ad" onclick="eliminarMembresia('${m.id}')">Eliminar</button></div></td></tr>`})
+document.getElementById('filtro-sede-global').disabled=false;
 }
 }
-async function cargarCaja(){
-let q=sb.from('caja').select('*').order('fecha',{ascending:false});
-const s=sedeGlobal();if(s)q=q.eq('sede',s);
-const{data}=await q;if(!data)return;
-const sedes={'Lurin':{mem:0,tien:0,otr:0,rows:[]},'Jose Galvez':{mem:0,tien:0,otr:0,rows:[]},'Villa El Salvador':{mem:0,tien:0,otr:0,rows:[]}};
-let totalMem=0,totalTien=0,totalOtros=0;
-const mesActual=hoy().substring(0,7);
-data.forEach(r=>{
-const esMes=r.fecha&&r.fecha.substring(0,7)===mesActual;
-const sede=r.sede||'Lurin';
-if(!sedes[sede])sedes[sede]={mem:0,tien:0,otr:0,rows:[]};
-sedes[sede].rows.push(r);
-if(esMes){
-const m=parseFloat(r.monto||0);
-if(r.tipo==='Membresia'){sedes[sede].mem+=m;totalMem+=m}
-else if(r.tipo==='Tienda'){sedes[sede].tien+=m;totalTien+=m}
-else{sedes[sede].otr+=m;totalOtros+=m}
+document.getElementById('login-pass').addEventListener('keydown',function(e){if(e.key==='Enter')iniciarSesion()});
+document.getElementById('login-user').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('login-pass').focus()});
+function hoy(){return new Date().toISOString().split('T')[0]}
+function horaActual(){return new Date().toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit',hour12:false})}
+function mesActual(){return hoy().substring(0,7)}
+function fechaCorta(f){if(!f)return'-';const d=new Date(f+'T12:00:00');return d.toLocaleDateString('es-PE',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function ft(id,q){document.getElementById(id).querySelectorAll('tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none'})}
+function op(id){document.getElementById(id).classList.add('show');if(id==='m-ven')cargarProductosVenta();if(id==='m-stock')cargarProductosStock()}
+function cl(id){document.getElementById(id).classList.remove('show')}
+function nt(msg,t){const e=document.getElementById('noti');e.textContent=msg;e.className='nt '+t+' show';setTimeout(()=>e.classList.remove('show'),3000)}
+function toggleSede(id){document.getElementById(id).classList.toggle('hidden')}
+function setVal(id,v){const el=document.getElementById(id);if(el)el.value=v||''}
+function sedeGlobal(){return document.getElementById('filtro-sede-global').value||''}
+function getLunes(dateStr){const d=new Date(dateStr+'T12:00:00');const day=d.getDay();const diff=day===0?6:day-1;d.setDate(d.getDate()-diff);return d.toISOString().split('T')[0]}
+function semanaLabel(lunesStr){const lun=new Date(lunesStr+'T12:00:00');const dom=new Date(lunesStr+'T12:00:00');dom.setDate(dom.getDate()+6);return 'Semana: '+lun.toLocaleDateString('es-PE',{weekday:'short',day:'2-digit',month:'2-digit'})+' - '+dom.toLocaleDateString('es-PE',{weekday:'short',day:'2-digit',month:'2-digit'})}
+function actBtns(tipo,idx){
+const esAdmin=usuarioActual&&usuarioActual.rol==='admin';
+if(!esAdmin)return '<td></td>';
+return '<td><div class="act-btns"><button class="ae" onclick="editar(\''+tipo+'\','+idx+')">Editar</button><button class="ad" onclick="eliminar(\''+tipo+'\','+idx+')">Eliminar</button></div></td>';
 }
+function aplicarFiltroGlobal(){renderTodo()}
+document.querySelectorAll('.side a').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const p=a.dataset.p;if(!p)return;document.querySelectorAll('.side a').forEach(l=>l.classList.remove('on'));a.classList.add('on');document.querySelectorAll('.pg').forEach(pg=>pg.classList.remove('on'));document.getElementById('pg-'+p).classList.add('on');const t={dash:'Dashboard',cli:'Clientes',mem:'Membresias',caja:'Caja / Ingresos',asis:'Asistencia',ent:'Empleados',usr:'Usuarios',tien:'Tienda',back:'Backup'};document.getElementById('pt').textContent=t[p]||p;document.getElementById('side').classList.remove('open');if(p==='caja')actualizarCaja();if(p==='usr')cargarUsuarios()})});
+document.querySelectorAll('.mo').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')})});
+document.getElementById('otro-concepto').addEventListener('change',function(){document.getElementById('otro-desc-wrap').style.display=this.value==='Otro'?'block':'none'});
+document.getElementById('ven-sede').addEventListener('change',cargarProductosVenta);
+document.getElementById('ven-prod').addEventListener('change',actualizarStockInfo);
+async function cargarDatos(){
+try{
+const[r1,r2,r3,r4,r5,r6,r7]=await Promise.all([
+sb.from('gym_clientes').select('*').order('id'),
+sb.from('gym_membresias').select('*').order('id'),
+sb.from('gym_caja').select('*').order('id'),
+sb.from('gym_asistencias').select('*').order('id'),
+sb.from('gym_empleados').select('*').order('id'),
+sb.from('gym_almacen').select('*').order('id'),
+sb.from('gym_ventas').select('*').order('id')
+]);
+clientes=(r1.data||[]).map(r=>({_sid:r.id,nombre:r.nombre,telefono:r.telefono||'',email:r.email||'',genero:r.genero||'',nacimiento:r.nacimiento||'',sede:r.sede||''}));
+membresias=(r2.data||[]).map(r=>({_sid:r.id,cliente:r.cliente,plan:r.plan,sede:r.sede,inicio:r.inicio,fin:r.fin,metodo:r.metodo||'',comp:r.comprobante||'',monto:r.monto||0}));
+caja=(r3.data||[]).map(r=>({_sid:r.id,fecha:r.fecha,hora:r.hora||'',cliente:r.cliente,tipo:r.tipo,concepto:r.concepto||'',monto:r.monto||0,metodo:r.metodo||'',comprobante:r.comprobante||'',sede:r.sede||'',registrado_por:r.registrado_por||''}));
+asistencias=(r4.data||[]).map(r=>({_sid:r.id,fecha:r.fecha,cliente:r.cliente,sede:r.sede,claseNum:r.clase_num||0}));
+empleados=(r5.data||[]).map(r=>({_sid:r.id,nombre:r.nombre,cargo:r.cargo||'',sede:r.sede||'',telefono:r.telefono||'',sueldo:r.sueldo||0}));
+almacen=(r6.data||[]).map(r=>({_sid:r.id,nombre:r.nombre,categoria:r.categoria||'',precio:r.precio||0,sede:r.sede||'',stock:r.stock||0,fechaRegistro:r.fecha_registro||''}));
+ventas=(r7.data||[]).map(r=>({_sid:r.id,fecha:r.fecha,producto:r.producto,cantidad:r.cantidad||0,precio:r.precio||0,total:r.total||0,sede:r.sede||'',metodo:r.metodo||''}));
+renderTodo();
+}catch(e){nt('Error cargando datos','er');console.error(e)}
+}
+function renderTodo(){renderClientes();renderMembresias();actualizarAlmacen();renderVentas();renderAsistencias();renderEmpleados();setPeriodoCaja('mes');actualizarDashboard()}
+async function eliminar(tipo,idx){
+if(!confirm('Estas seguro de eliminar este registro?'))return;
+let tabla='',item=null;
+if(tipo==='cli'){item=clientes[idx];tabla='gym_clientes'}
+else if(tipo==='mem'){item=membresias[idx];tabla='gym_membresias'}
+else if(tipo==='caja'){item=caja[idx];tabla='gym_caja'}
+else if(tipo==='asis'){item=asistencias[idx];tabla='gym_asistencias'}
+else if(tipo==='emp'){item=empleados[idx];tabla='gym_empleados'}
+else if(tipo==='vent'){item=ventas[idx];tabla='gym_ventas'}
+else if(tipo==='prod'){item=almacen[idx];tabla='gym_almacen'}
+if(!item||!item._sid){nt('Error: registro sin ID','er');return}
+const{error}=await sb.from(tabla).delete().eq('id',item._sid);
+if(error){nt('Error al eliminar','er');console.error(error);return}
+if(tipo==='cli'){clientes.splice(idx,1)}
+else if(tipo==='mem'){membresias.splice(idx,1)}
+else if(tipo==='caja'){caja.splice(idx,1)}
+else if(tipo==='asis'){asistencias.splice(idx,1);recalcularClases()}
+else if(tipo==='emp'){empleados.splice(idx,1)}
+else if(tipo==='vent'){ventas.splice(idx,1)}
+else if(tipo==='prod'){almacen.splice(idx,1)}
+renderTodo();nt('Registro eliminado','ok');
+}
+function editar(tipo,idx){
+if(tipo==='cli')abrirModalCli(idx);
+else if(tipo==='mem')abrirModalMem(idx);
+else if(tipo==='asis')editarAsistencia(idx);
+else if(tipo==='emp')abrirModalEmp(idx);
+else if(tipo==='prod')abrirModalProd(idx);
+else if(tipo==='vent')editarVenta(idx);
+else if(tipo==='caja')editarCaja(idx);
+}
+function abrirModalCli(idx){
+editCliIdx=idx===undefined?-1:idx;
+document.getElementById('m-cli-title').textContent=editCliIdx===-1?'Nuevo Cliente':'Editar Cliente';
+if(editCliIdx>=0){
+const c=clientes[editCliIdx];
+setVal('cli-nom',c.nombre);setVal('cli-tel',c.telefono);setVal('cli-email',c.email);setVal('cli-gen',c.genero);setVal('cli-nac',c.nacimiento);setVal('cli-sede',c.sede);
+}else{setVal('cli-nom','');setVal('cli-tel','');setVal('cli-email','');setVal('cli-nac','');}
+op('m-cli');
+}
+async function guardarCliente(){
+const nom=document.getElementById('cli-nom').value.trim();
+if(!nom){nt('Ingrese nombre del cliente','er');return}
+const duplicado=clientes.find((c,i)=>c.nombre.toLowerCase()===nom.toLowerCase()&&i!==editCliIdx);
+if(duplicado&&!confirm('Ya existe un cliente con ese nombre. Desea continuar?'))return;
+const obj={nombre:nom,telefono:document.getElementById('cli-tel').value,email:document.getElementById('cli-email').value,genero:document.getElementById('cli-gen').value,nacimiento:document.getElementById('cli-nac').value,sede:document.getElementById('cli-sede').value};
+const dbObj={nombre:obj.nombre,telefono:obj.telefono,email:obj.email,genero:obj.genero,nacimiento:obj.nacimiento||null,sede:obj.sede};
+if(editCliIdx>=0){
+const sid=clientes[editCliIdx]._sid;
+const{error}=await sb.from('gym_clientes').update(dbObj).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+clientes[editCliIdx]={...obj,_sid:sid};nt('Cliente actualizado','ok');
+}else{
+const{data,error}=await sb.from('gym_clientes').insert(dbObj).select().single();
+if(error){nt('Error al guardar','er');return}
+clientes.push({...obj,_sid:data.id});nt('Cliente registrado','ok');
+}
+editCliIdx=-1;renderClientes();cl('m-cli');actualizarDashboard();
+}
+function renderClientes(){
+const sg=sedeGlobal();
+const tbody=document.getElementById('t-cli');tbody.innerHTML='';
+clientes.forEach((c,i)=>{
+if(sg&&c.sede!==sg)return;
+const tr=document.createElement('tr');
+tr.innerHTML='<td>'+c.nombre+'</td><td>'+c.telefono+'</td><td>'+c.sede+'</td><td><span class="bg ok">Activo</span></td>'+actBtns('cli',i);
+tbody.appendChild(tr);
 });
-const total=totalMem+totalTien+totalOtros;
-document.getElementById('caja-total').textContent=fmtMonto(total);
-document.getElementById('caja-mem').textContent=fmtMonto(totalMem);
-document.getElementById('caja-tien').textContent=fmtMonto(totalTien);
-document.getElementById('caja-otros').textContent=fmtMonto(totalOtros);
-document.getElementById('rs-lur-mem').textContent=fmtMonto(sedes['Lurin'].mem);
-document.getElementById('rs-lur-tien').textContent=fmtMonto(sedes['Lurin'].tien);
-document.getElementById('rs-lur-otr').textContent=fmtMonto(sedes['Lurin'].otr);
-document.getElementById('rs-lur-tot').textContent=fmtMonto(sedes['Lurin'].mem+sedes['Lurin'].tien+sedes['Lurin'].otr);
-document.getElementById('rs-jg-mem').textContent=fmtMonto(sedes['Jose Galvez'].mem);
-document.getElementById('rs-jg-tien').textContent=fmtMonto(sedes['Jose Galvez'].tien);
-document.getElementById('rs-jg-otr').textContent=fmtMonto(sedes['Jose Galvez'].otr);
-document.getElementById('rs-jg-tot').textContent=fmtMonto(sedes['Jose Galvez'].mem+sedes['Jose Galvez'].tien+sedes['Jose Galvez'].otr);
-document.getElementById('rs-ves-mem').textContent=fmtMonto(sedes['Villa El Salvador'].mem);
-document.getElementById('rs-ves-tien').textContent=fmtMonto(sedes['Villa El Salvador'].tien);
-document.getElementById('rs-ves-otr').textContent=fmtMonto(sedes['Villa El Salvador'].otr);
-document.getElementById('rs-ves-tot').textContent=fmtMonto(sedes['Villa El Salvador'].mem+sedes['Villa El Salvador'].tien+sedes['Villa El Salvador'].otr);
-document.getElementById('st-lur-mem').textContent=fmtMonto(sedes['Lurin'].mem);
-document.getElementById('st-lur-tien').textContent=fmtMonto(sedes['Lurin'].tien);
-document.getElementById('st-lur-otr').textContent=fmtMonto(sedes['Lurin'].otr);
-document.getElementById('st-lur-tot').textContent=fmtMonto(sedes['Lurin'].mem+sedes['Lurin'].tien+sedes['Lurin'].otr);
-document.getElementById('st-jg-mem').textContent=fmtMonto(sedes['Jose Galvez'].mem);
-document.getElementById('st-jg-tien').textContent=fmtMonto(sedes['Jose Galvez'].tien);
-document.getElementById('st-jg-otr').textContent=fmtMonto(sedes['Jose Galvez'].otr);
-document.getElementById('st-jg-tot').textContent=fmtMonto(sedes['Jose Galvez'].mem+sedes['Jose Galvez'].tien+sedes['Jose Galvez'].otr);
-document.getElementById('st-ves-mem').textContent=fmtMonto(sedes['Villa El Salvador'].mem);
-document.getElementById('st-ves-tien').textContent=fmtMonto(sedes['Villa El Salvador'].tien);
-document.getElementById('st-ves-otr').textContent=fmtMonto(sedes['Villa El Salvador'].otr);
-document.getElementById('st-ves-tot').textContent=fmtMonto(sedes['Villa El Salvador'].mem+sedes['Villa El Salvador'].tien+sedes['Villa El Salvador'].otr);
-['Lurin','Jose Galvez','Villa El Salvador'].forEach(sede=>{
-const key=sede==='Lurin'?'lurin':sede==='Jose Galvez'?'jg':'ves';
-const tb=document.getElementById('t-caja-'+key);tb.innerHTML='';
-sedes[sede].rows.forEach(r=>{
-tb.innerHTML+=`<tr><td>${fmtFecha(r.fecha)}</td><td>${r.cliente_nombre||'-'}</td><td><span class="bg ${r.tipo==='Membresia'?'bl':r.tipo==='Tienda'?'pu':'oc'}">${r.tipo||'-'}</span></td><td>${r.concepto||'-'}</td><td><b>${fmtMonto(r.monto)}</b></td><td>${r.metodo_pago||'-'}</td><td>${r.comprobante||'-'}</td><td><div class="act-btns"><button class="ae" onclick="editarOtroCobro('${r.id}')">Editar</button><button class="ad" onclick="eliminarCaja('${r.id}')">Eliminar</button></div></td></tr>`})});
-const tbAll=document.getElementById('t-caja-all');tbAll.innerHTML='';
-data.forEach(r=>{
-tbAll.innerHTML+=`<tr><td>${fmtFecha(r.fecha)}</td><td>${r.cliente_nombre||'-'}</td><td><span class="bg ${r.tipo==='Membresia'?'bl':r.tipo==='Tienda'?'pu':'oc'}">${r.tipo||'-'}</span></td><td>${r.concepto||'-'}</td><td><b>${fmtMonto(r.monto)}</b></td><td>${r.metodo_pago||'-'}</td><td>${r.comprobante||'-'}</td><td>${r.sede||'-'}</td><td><div class="act-btns"><button class="ae" onclick="editarOtroCobro('${r.id}')">Editar</button><button class="ad" onclick="eliminarCaja('${r.id}')">Eliminar</button></div></td></tr>`});
-filtrarCaja()
+document.getElementById('d-cli').textContent=sg?clientes.filter(c=>c.sede===sg).length:clientes.length;
 }
-function filtrarCaja(){
-const sede=document.getElementById('f-sede').value;
-const tipo=document.getElementById('f-tipo').value;
-const metodo=document.getElementById('f-metodo').value;
-document.querySelectorAll('#t-caja-all tr,#t-caja-lurin tr,#t-caja-jg tr,#t-caja-ves tr').forEach(r=>{
-const celdas=r.querySelectorAll('td');if(!celdas.length)return;
-let show=true;
-const txt=r.textContent;
-if(sede&&!txt.includes(sede))show=false;
-if(tipo&&!txt.includes(tipo))show=false;
-if(metodo&&!txt.includes(metodo))show=false;
-r.style.display=show?'':'none'})
+function abrirModalMem(idx){
+editMemIdx=idx===undefined?-1:idx;
+document.getElementById('m-mem-title').textContent=editMemIdx===-1?'Nueva Membresia':'Editar Membresia';
+if(editMemIdx>=0){
+const m=membresias[editMemIdx];
+setVal('mem-cli',m.cliente);setVal('mem-sede',m.sede);setVal('mem-ini',m.inicio);setVal('mem-metodo',m.metodo);setVal('mem-comp',m.comp);
+const planSel=document.getElementById('mem-plan');
+for(let o of planSel.options){if(o.text.includes(m.plan)){planSel.value=o.value;break}}
+}else{setVal('mem-cli','');setVal('mem-ini','');}
+op('m-mem');
 }
-async function cargarAsistencias(){
-let q=sb.from('asistencias').select('*').order('fecha',{ascending:false});
-const s=sedeGlobal();if(s)q=q.eq('sede',s);
-const{data}=await q;if(!data)return;
-const hoyStr=hoy();
-const asistHoy=data.filter(a=>a.fecha===hoyStr);
-document.getElementById('asis-hoy').textContent=asistHoy.length;
-document.getElementById('asis-total').textContent=data.length;
-const tbHoy=document.getElementById('t-asis-hoy');tbHoy.innerHTML='';
-const theadHoy=document.getElementById('thead-asis-hoy');
-if(currentRol==='trabajadora'){
-theadHoy.innerHTML='<th>Cliente</th><th>Sede</th>';
-asistHoy.forEach(a=>{
-tbHoy.innerHTML+=`<tr><td>${a.cliente_nombre||'-'}</td><td>${a.sede||'-'}</td></tr>`});
+async function guardarMembresia(){
+const cli=document.getElementById('mem-cli').value.trim();
+if(!cli){nt('Ingrese nombre del cliente','er');return}
+const planSel=document.getElementById('mem-plan');
+const planText=planSel.options[planSel.selectedIndex].text;
+const monto=parseFloat(planSel.value);
+const sede=document.getElementById('mem-sede').value;
+const inicio=document.getElementById('mem-ini').value||hoy();
+const metodo=document.getElementById('mem-metodo').value;
+const comp=document.getElementById('mem-comp').value;
+let dias=30;
+if(planText.includes('Bimestral'))dias=60;
+if(planText.includes('Trimestral'))dias=90;
+if(planText.includes('Clase'))dias=1;
+const fin=new Date(inicio+'T12:00:00');fin.setDate(fin.getDate()+dias);
+const finStr=fin.toISOString().split('T')[0];
+const obj={cliente:cli,plan:planText.split(' - ')[0],sede:sede,inicio:inicio,fin:finStr,metodo:metodo,comp:comp,monto:monto};
+const dbMem={cliente:cli,plan:obj.plan,sede:sede,inicio:inicio,fin:finStr,metodo:metodo,comprobante:comp,monto:monto};
+if(editMemIdx>=0){
+const sid=membresias[editMemIdx]._sid;
+const{error}=await sb.from('gym_membresias').update(dbMem).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+const oldMem=membresias[editMemIdx];
+const cajaIdx=caja.findIndex(c=>c.tipo==='Membresia'&&c.cliente===oldMem.cliente&&c.fecha===oldMem.inicio&&c.sede===oldMem.sede);
+if(cajaIdx>=0){
+const cajaUpdate={cliente:cli,concepto:obj.plan,monto:monto,metodo:metodo,comprobante:comp,sede:sede,fecha:inicio};
+await sb.from('gym_caja').update(cajaUpdate).eq('id',caja[cajaIdx]._sid);
+caja[cajaIdx]={...caja[cajaIdx],...cajaUpdate};
+}
+membresias[editMemIdx]={...obj,_sid:sid};nt('Membresia actualizada','ok');
 }else{
-theadHoy.innerHTML='<th>Cliente</th><th>Sede</th><th>Clases acumuladas</th><th>Acciones</th>';
-asistHoy.forEach(a=>{
-tbHoy.innerHTML+=`<tr><td>${a.cliente_nombre||'-'}</td><td>${a.sede||'-'}</td><td>${a.clase_numero||'-'}</td><td><div class="act-btns"><button class="ad" onclick="eliminarAsistencia('${a.id}')">Eliminar</button></div></td></tr>`});
+const{data:memData,error:memErr}=await sb.from('gym_membresias').insert(dbMem).select().single();
+if(memErr){nt('Error al guardar','er');return}
+membresias.push({...obj,_sid:memData.id});
+const yaExiste=clientes.find(c=>c.nombre.toLowerCase()===cli.toLowerCase());
+if(!yaExiste){
+const dbCli={nombre:cli,telefono:'',email:'',genero:'',nacimiento:null,sede:sede};
+const{data:cliData,error:cliErr}=await sb.from('gym_clientes').insert(dbCli).select().single();
+if(cliErr){console.error('Error creando cliente:',cliErr);nt('Membresia creada pero error al registrar cliente: '+cliErr.message,'er')}
+else if(cliData){clientes.push({...dbCli,_sid:cliData.id})}
 }
-if(currentRol==='trabajadora')return;
-const tbAll=document.getElementById('t-asis-all');tbAll.innerHTML='';
-const sedeF=document.getElementById('f-asis-sede')?document.getElementById('f-asis-sede').value:'';
-const filtered=sedeF?data.filter(a=>a.sede===sedeF):data;
-let lastWeek='';
-filtered.forEach(a=>{
-const f=new Date(a.fecha+'T00:00:00');
-const day=f.getDay();
-const diff=f.getDate()-day+(day===0?-6:1);
-const monday=new Date(f);monday.setDate(diff);
-const sunday=new Date(monday);sunday.setDate(monday.getDate()+6);
-const weekKey=monday.toISOString().split('T')[0];
-if(weekKey!==lastWeek){
-const weekData=filtered.filter(x=>{const xf=new Date(x.fecha+'T00:00:00');return xf>=monday&&xf<=sunday});
-tbAll.innerHTML+=`<tr class="week-sep"><td colspan="5">Semana ${fmtFecha(weekKey)} - ${fmtFecha(sunday.toISOString().split('T')[0])}<span class="week-total">${weekData.length} asistencias</span></td></tr>`;
-lastWeek=weekKey}
-tbAll.innerHTML+=`<tr><td>${fmtFecha(a.fecha)}</td><td>${a.cliente_nombre||'-'}</td><td>${a.sede||'-'}</td><td>${a.clase_numero||'-'}</td><td><div class="act-btns"><button class="ad" onclick="eliminarAsistencia('${a.id}')">Eliminar</button></div></td></tr>`})
+const dbCaja={fecha:inicio,hora:horaActual(),cliente:cli,tipo:'Membresia',concepto:obj.plan,monto:monto,metodo:metodo,comprobante:comp,sede:sede,registrado_por:usuarioActual?usuarioActual.usuario:''};
+const{data:cajaData,error:cajaErr}=await sb.from('gym_caja').insert(dbCaja).select().single();
+if(!cajaErr&&cajaData)caja.push({...dbCaja,_sid:cajaData.id});
+nt('Membresia creada y pago registrado S/ '+monto.toFixed(2),'ok');
 }
-function renderAsistencias(){cargarAsistencias()}
-async function cargarEmpleados(){
-let q=sb.from('empleados').select('*').order('nombre');
-const s=sedeGlobal();if(s)q=q.eq('sede',s);
-const{data}=await q;if(!data)return;
-const tb=document.getElementById('t-ent');tb.innerHTML='';
-data.forEach(e=>{
-tb.innerHTML+=`<tr><td>${e.nombre||'-'}</td><td>${e.cargo||'-'}</td><td>${e.sede||'-'}</td><td>${e.telefono||'-'}</td><td>${fmtMonto(e.sueldo)}</td><td><div class="act-btns"><button class="ae" onclick="editarEmpleado('${e.id}')">Editar</button><button class="ad" onclick="eliminarEmpleado('${e.id}')">Eliminar</button></div></td></tr>`})
+editMemIdx=-1;renderMembresias();renderClientes();cl('m-mem');actualizarCaja();actualizarDashboard();
 }
-async function cargarProductos(){
-const{data}=await sb.from('productos').select('*').order('nombre');if(!data)return;
-const tb=document.getElementById('t-prod');tb.innerHTML='';
-const thead=document.getElementById('thead-prod');
-const selStock=document.getElementById('stock-prod');selStock.innerHTML='';
-const selVen=document.getElementById('ven-prod');selVen.innerHTML='';
-if(currentRol==='trabajadora'){
-const sedeUser=currentUser.sede||'';
-const col=sedeUser==='Lurin'?'stock_lurin':sedeUser==='Jose Galvez'?'stock_jg':'stock_ves';
-thead.innerHTML='<th>Producto</th><th>Categoria</th><th>Precio</th><th>Stock</th>';
-data.forEach(p=>{
-tb.innerHTML+=`<tr><td>${p.nombre||'-'}</td><td>${p.categoria||'-'}</td><td>${fmtMonto(p.precio)}</td><td>${p[col]||0}</td></tr>`;
-selVen.innerHTML+=`<option value="${p.id}" data-precio="${p.precio}">${p.nombre} - ${fmtMonto(p.precio)}</option>`})
+function clasesMaxPlan(plan){
+if(plan.includes('Clase'))return 1;
+const semanal=plan.includes('Diario')?6:3;
+if(plan.includes('Trimestral'))return semanal*12;
+if(plan.includes('Bimestral'))return semanal*8;
+return semanal*4;
+}
+function asistenciasDeMem(m){
+return asistencias.filter(a=>a.cliente.toLowerCase()===m.cliente.toLowerCase()&&a.fecha>=m.inicio&&a.fecha<=m.fin);
+}
+function renderMembresias(){
+const sg=sedeGlobal();const hoyStr=hoy();
+const esAdmin=usuarioActual&&usuarioActual.rol==='admin';
+document.querySelectorAll('.col-clases-mem').forEach(el=>{el.style.display=esAdmin?'':'none'});
+const tbody=document.getElementById('t-mem');tbody.innerHTML='';
+let lista=membresias.map((m,i)=>({...m,_i:i}));
+if(sg)lista=lista.filter(m=>m.sede===sg);
+const sorted=lista.sort((a,b)=>b.inicio.localeCompare(a.inicio));
+const semanas={};
+sorted.forEach(m=>{const lunes=getLunes(m.inicio);if(!semanas[lunes])semanas[lunes]=[];semanas[lunes].push(m)});
+const semanasOrdenadas=Object.keys(semanas).sort((a,b)=>b.localeCompare(a));
+let activasCount=0;
+const colTotal=esAdmin?10:9;
+semanasOrdenadas.forEach(lunes=>{
+const grupo=semanas[lunes];const totalSemana=grupo.reduce((s,m)=>s+m.monto,0);
+const sep=document.createElement('tr');sep.className='week-sep';
+sep.innerHTML='<td colspan="'+colTotal+'">'+semanaLabel(lunes)+'<span class="week-total">'+grupo.length+' memb. | S/ '+totalSemana.toFixed(2)+'</span></td>';
+tbody.appendChild(sep);
+grupo.forEach(m=>{
+const vencida=m.fin<hoyStr;
+const estado=vencida?'<span class="bg no">Vencida</span>':'<span class="bg ok">Activa</span>';
+if(!vencida)activasCount++;
+let clasesHtml='';
+if(esAdmin){
+const asis=asistenciasDeMem(m);
+const usadas=asis.length;
+const max=clasesMaxPlan(m.plan);
+const pct=max>0?Math.round(usadas/max*100):0;
+const color=pct>=100?'no':pct>=75?'war':'ok';
+const fechasStr=asis.map(a=>fechaCorta(a.fecha)).join(', ');
+const tooltip=fechasStr||'Sin asistencias';
+clasesHtml='<td style="cursor:pointer" title="'+tooltip+'"><span class="bg '+color+'">'+usadas+'/'+max+'</span></td>';
+}
+const tr=document.createElement('tr');
+tr.innerHTML='<td>'+m.cliente+'</td><td>'+m.plan+'</td><td>'+m.sede+'</td><td>'+fechaCorta(m.inicio)+'</td><td>'+fechaCorta(m.fin)+'</td><td>'+m.metodo+'</td><td>'+m.comp+'</td><td>'+estado+'</td>'+clasesHtml+actBtns('mem',m._i);
+tbody.appendChild(tr);
+});
+});
+document.getElementById('d-mem').textContent=activasCount;
+}
+function abrirModalOtro(idx){
+editCajaIdx=idx===undefined?-1:idx;
+const isEdit=editCajaIdx>=0;
+const r=isEdit?caja[editCajaIdx]:null;
+const esOtroTipo=isEdit&&(r.tipo==='Membresia'||r.tipo==='Tienda');
+document.getElementById('m-otro-title').textContent=isEdit?'Editar Cobro':'Registrar Otro Cobro';
+document.getElementById('otro-tipo-wrap').style.display=esOtroTipo?'block':'none';
+document.getElementById('otro-concepto-wrap').style.display=esOtroTipo?'none':'block';
+document.getElementById('otro-concepto-text-wrap').style.display=esOtroTipo?'block':'none';
+if(isEdit){
+setVal('otro-cli',r.cliente);setVal('otro-monto',r.monto);setVal('otro-sede',r.sede);
+setVal('otro-metodo',r.metodo);setVal('otro-comp',r.comprobante);setVal('otro-fecha',r.fecha);
+if(esOtroTipo){
+document.getElementById('otro-tipo-show').value=r.tipo;
+document.getElementById('otro-concepto-text').value=r.concepto;
 }else{
-thead.innerHTML='<th>Fecha Registro</th><th>Producto</th><th>Categoria</th><th>Precio</th><th>Lurin</th><th>Jose Galvez</th><th>Villa El Salvador</th><th>Acciones</th>';
-data.forEach(p=>{
-const fecha=p.created_at?p.created_at.split('T')[0]:'';
-tb.innerHTML+=`<tr><td>${fmtFecha(fecha)}</td><td>${p.nombre||'-'}</td><td>${p.categoria||'-'}</td><td>${fmtMonto(p.precio)}</td><td>${p.stock_lurin||0}</td><td>${p.stock_jg||0}</td><td>${p.stock_ves||0}</td><td><div class="act-btns"><button class="ad" onclick="eliminarProducto('${p.id}')">Eliminar</button></div></td></tr>`;
-selStock.innerHTML+=`<option value="${p.id}">${p.nombre}</option>`;
-selVen.innerHTML+=`<option value="${p.id}" data-precio="${p.precio}">${p.nombre} - ${fmtMonto(p.precio)}</option>`})
+const sel=document.getElementById('otro-concepto');let found=false;
+for(let o of sel.options){if(o.value===r.concepto){sel.value=r.concepto;found=true;break}}
+if(!found){sel.value='Otro';document.getElementById('otro-desc-wrap').style.display='block';setVal('otro-desc',r.concepto)}
+else{document.getElementById('otro-desc-wrap').style.display='none'}
 }
-}
-async function cargarVentas(){
-let q=sb.from('ventas').select('*').order('fecha',{ascending:false});
-const s=sedeGlobal();if(s)q=q.eq('sede',s);
-const{data}=await q;if(!data)return;
-const tb=document.getElementById('t-vent');tb.innerHTML='';
-const thead=document.getElementById('thead-vent');
-if(currentRol==='trabajadora'){
-thead.innerHTML='<th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Total</th><th>Metodo</th>';
-data.forEach(v=>{
-tb.innerHTML+=`<tr><td>${fmtFecha(v.fecha)}</td><td>${v.producto_nombre||'-'}</td><td>${v.cantidad}</td><td><b>${fmtMonto(v.total)}</b></td><td>${v.metodo_pago||'-'}</td></tr>`})
 }else{
-thead.innerHTML='<th>Fecha</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Total</th><th>Sede</th><th>Metodo</th><th>Acciones</th>';
-data.forEach(v=>{
-tb.innerHTML+=`<tr><td>${fmtFecha(v.fecha)}</td><td>${v.producto_nombre||'-'}</td><td>${v.cantidad}</td><td>${fmtMonto(v.precio_unit)}</td><td><b>${fmtMonto(v.total)}</b></td><td>${v.sede||'-'}</td><td>${v.metodo_pago||'-'}</td><td><div class="act-btns"><button class="ad" onclick="eliminarVenta('${v.id}')">Eliminar</button></div></td></tr>`})
+setVal('otro-cli','');setVal('otro-monto','');setVal('otro-desc','');setVal('otro-fecha',hoy());
+document.getElementById('otro-desc-wrap').style.display='none';
+document.getElementById('otro-tipo-wrap').style.display='none';
+document.getElementById('otro-concepto-text-wrap').style.display='none';
+document.getElementById('otro-concepto-wrap').style.display='block';
 }
+op('m-otro');
 }
-async function cargarUsuarios(){
-const{data}=await sb.from('usuarios').select('*').order('usuario');if(!data)return;
-const tb=document.getElementById('t-usr');tb.innerHTML='';
-data.filter(u=>u.rol==='trabajadora').forEach(u=>{
-tb.innerHTML+=`<tr><td>${u.usuario}</td><td>${u.nombre||'-'}</td><td>${u.sede||'-'}</td><td>${u.turno||'-'}</td><td><div class="act-btns"><button class="ae" onclick="editarUsuario('${u.id}')">Editar</button></div></td></tr>`})
+async function guardarOtroCobro(){
+const cli=document.getElementById('otro-cli').value.trim();
+if(!cli){nt('Ingrese nombre del cliente','er');return}
+const monto=parseFloat(document.getElementById('otro-monto').value);
+if(!monto||monto<=0){nt('Ingrese un monto valido','er');return}
+const sede=document.getElementById('otro-sede').value;
+const metodo=document.getElementById('otro-metodo').value;
+const comp=document.getElementById('otro-comp').value;
+const fecha=document.getElementById('otro-fecha').value||hoy();
+if(editCajaIdx>=0){
+const original=caja[editCajaIdx];
+const sid=original._sid;
+let updateObj;
+if(original.tipo==='Membresia'||original.tipo==='Tienda'){
+updateObj={cliente:cli,monto:monto,sede:sede,metodo:metodo,comprobante:comp,fecha:fecha};
+}else{
+const concepto=document.getElementById('otro-concepto').value;
+const desc=document.getElementById('otro-desc').value.trim();
+const conceptoFinal=concepto==='Otro'&&desc?desc:concepto;
+updateObj={fecha:fecha,cliente:cli,tipo:'Otro',concepto:conceptoFinal,monto:monto,metodo:metodo,comprobante:comp,sede:sede};
 }
-async function actualizarDashboard(){
-const{data:cli}=await sb.from('clientes').select('*');
-const{data:mem}=await sb.from('membresias').select('*');
-const{data:emp}=await sb.from('empleados').select('*');
-const{data:caja}=await sb.from('caja').select('*');
-const hoyF=new Date(hoy());const en7=new Date(hoyF);en7.setDate(en7.getDate()+7);
-const activas=mem?mem.filter(m=>m.fecha_fin&&new Date(m.fecha_fin)>=hoyF):[];
-const porVencer=mem?mem.filter(m=>{if(!m.fecha_fin)return false;const f=new Date(m.fecha_fin);return f>=hoyF&&f<=en7}):[];
-const mesActual=hoy().substring(0,7);
-const ingresosMes=caja?caja.filter(c=>c.fecha&&c.fecha.substring(0,7)===mesActual).reduce((s,c)=>s+parseFloat(c.monto||0),0):0;
-document.getElementById('d-cli').textContent=cli?cli.length:0;
-document.getElementById('d-mem').textContent=activas.length;
-document.getElementById('d-ing').textContent=fmtMonto(ingresosMes);
+const{error}=await sb.from('gym_caja').update(updateObj).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+caja[editCajaIdx]={...original,...updateObj,_sid:sid};
+nt('Cobro actualizado','ok');
+}else{
+const concepto=document.getElementById('otro-concepto').value;
+const desc=document.getElementById('otro-desc').value.trim();
+const conceptoFinal=concepto==='Otro'&&desc?desc:concepto;
+const dbObj={fecha:fecha,hora:horaActual(),cliente:cli,tipo:'Otro',concepto:conceptoFinal,monto:monto,metodo:metodo,comprobante:comp,sede:sede,registrado_por:usuarioActual?usuarioActual.usuario:''};
+const{data,error}=await sb.from('gym_caja').insert(dbObj).select().single();
+if(error){nt('Error al guardar','er');return}
+caja.push({...dbObj,_sid:data.id});
+nt('Cobro registrado S/ '+monto.toFixed(2),'ok');
+}
+editCajaIdx=-1;cl('m-otro');actualizarCaja();actualizarDashboard();
+}
+function editarCaja(idx){abrirModalOtro(idx)}
+function filtrarCaja(){actualizarCaja()}
+let periodoCaja='mes';
+function setPeriodoCaja(p){
+periodoCaja=p;
+const btns=['hoy','semana','mes','todo','custom'];
+btns.forEach(b=>{
+const el=document.getElementById('btn-periodo-'+b);
+if(el){el.style.background=b===p?'var(--pri)':'#e0e0e0';el.style.color=b===p?'#fff':'#333'}
+});
+if(p==='hoy'){
+document.getElementById('f-desde').value=hoy();
+document.getElementById('f-hasta').value=hoy();
+}else if(p==='semana'){
+const lunes=getLunes(hoy());
+const dom=new Date(lunes+'T12:00:00');dom.setDate(dom.getDate()+6);
+document.getElementById('f-desde').value=lunes;
+document.getElementById('f-hasta').value=dom.toISOString().split('T')[0];
+}else if(p==='mes'){
+document.getElementById('f-desde').value=hoy().substring(0,7)+'-01';
+document.getElementById('f-hasta').value='';
+}else if(p==='todo'){
+document.getElementById('f-desde').value='';
+document.getElementById('f-hasta').value='';
+}
+filtrarCaja();
+}
+function getPeriodoLabel(){
+if(periodoCaja==='hoy')return'Total de hoy';
+if(periodoCaja==='semana')return'Total de la semana';
+if(periodoCaja==='mes')return'Total del mes';
+if(periodoCaja==='todo')return'Total general';
+return'Total filtrado';
+}
+function getTurnoUsuario(usuario){
+if(!usuario)return'';
+return usuario.endsWith('M')?'M':usuario.endsWith('T')?'T':'';
+}
+function cargarFiltroUsuarios(){
+const sel=document.getElementById('f-usuario');
+if(!sel)return;
+const usuarios=[...new Set(caja.map(r=>r.registrado_por).filter(u=>u))];
+usuarios.sort();
+sel.innerHTML='<option value="">Todos los usuarios</option>';
+usuarios.forEach(u=>{
+sel.innerHTML+='<option value="'+u+'">'+u+'</option>';
+});
+}
+function actualizarCaja(){
+const fSede=document.getElementById('f-sede').value;
+const fTipo=document.getElementById('f-tipo').value;
+const fMetodo=document.getElementById('f-metodo').value;
+const fDesde=document.getElementById('f-desde').value;
+const fHasta=document.getElementById('f-hasta').value;
+const fTurno=document.getElementById('f-turno').value;
+const fUsuario=document.getElementById('f-usuario').value;
+const sg=sedeGlobal();
+cargarFiltroUsuarios();
+let filtrado=caja.map((r,i)=>({...r,_i:i})).filter(r=>{
+if(sg&&r.sede!==sg)return false;
+if(fSede&&r.sede!==fSede)return false;
+if(fTipo&&r.tipo!==fTipo)return false;
+if(fMetodo&&r.metodo!==fMetodo)return false;
+if(fDesde&&r.fecha<fDesde)return false;
+if(fHasta&&r.fecha>fHasta)return false;
+if(fTurno&&getTurnoUsuario(r.registrado_por)!==fTurno)return false;
+if(fUsuario&&r.registrado_por!==fUsuario)return false;
+return true;
+});
+['t-caja-lurin','t-caja-jg','t-caja-ves','t-caja-all'].forEach(id=>{document.getElementById(id).innerHTML=''});
+const totales={Lurin:{Membresia:0,Tienda:0,Otro:0},'Jose Galvez':{Membresia:0,Tienda:0,Otro:0},'Villa El Salvador':{Membresia:0,Tienda:0,Otro:0}};
+let totalGeneral=0,totalMem=0,totalTien=0,totalOtros=0;
+filtrado.sort((a,b)=>{const fc=b.fecha.localeCompare(a.fecha);if(fc!==0)return fc;return(b.hora||'').localeCompare(a.hora||'')});
+filtrado.forEach(r=>{
+const tipoBg=r.tipo==='Membresia'?'ok':r.tipo==='Tienda'?'bl':'oc';
+const fila='<td>'+fechaCorta(r.fecha)+'</td><td>'+(r.hora||'-')+'</td><td>'+r.cliente+'</td><td><span class="bg '+tipoBg+'">'+r.tipo+'</span></td><td>'+r.concepto+'</td><td><b>S/ '+r.monto.toFixed(2)+'</b></td><td>'+r.metodo+'</td><td>'+r.comprobante+'</td><td>'+(r.registrado_por||'-')+'</td>';
+const btns='<td><div class="act-btns"><button class="ae" onclick="editarCaja('+r._i+')">Editar</button><button class="ad" onclick="eliminar(\'caja\','+r._i+')">Eliminar</button></div></td>';
+let sedeId='';
+if(r.sede==='Lurin')sedeId='t-caja-lurin';
+else if(r.sede==='Jose Galvez')sedeId='t-caja-jg';
+else sedeId='t-caja-ves';
+const tr1=document.createElement('tr');tr1.innerHTML=fila+btns;
+document.getElementById(sedeId).appendChild(tr1);
+const tr2=document.createElement('tr');tr2.innerHTML=fila+'<td>'+r.sede+'</td>'+btns;
+document.getElementById('t-caja-all').appendChild(tr2);
+if(totales[r.sede])totales[r.sede][r.tipo]=(totales[r.sede][r.tipo]||0)+r.monto;
+totalGeneral+=r.monto;
+if(r.tipo==='Membresia')totalMem+=r.monto;
+else if(r.tipo==='Tienda')totalTien+=r.monto;
+else totalOtros+=r.monto;
+});
+document.getElementById('caja-total').textContent=totalGeneral.toFixed(2);
+document.getElementById('caja-total-label').textContent=getPeriodoLabel();
+document.getElementById('caja-mem').textContent=totalMem.toFixed(2);
+document.getElementById('caja-tien').textContent=totalTien.toFixed(2);
+document.getElementById('caja-otros').textContent=totalOtros.toFixed(2);
+const sedes=[{key:'Lurin',pre:'lur'},{key:'Jose Galvez',pre:'jg'},{key:'Villa El Salvador',pre:'ves'}];
+sedes.forEach(s=>{
+const m=totales[s.key].Membresia||0;const t=totales[s.key].Tienda||0;const o=totales[s.key].Otro||0;const tot=m+t+o;
+document.getElementById('rs-'+s.pre+'-mem').textContent='S/ '+m.toFixed(2);
+document.getElementById('rs-'+s.pre+'-tien').textContent='S/ '+t.toFixed(2);
+document.getElementById('rs-'+s.pre+'-otr').textContent='S/ '+o.toFixed(2);
+document.getElementById('rs-'+s.pre+'-tot').textContent='S/ '+tot.toFixed(2);
+document.getElementById('st-'+s.pre+'-mem').textContent='S/ '+m.toFixed(2);
+document.getElementById('st-'+s.pre+'-tien').textContent='S/ '+t.toFixed(2);
+document.getElementById('st-'+s.pre+'-otr').textContent='S/ '+o.toFixed(2);
+document.getElementById('st-'+s.pre+'-tot').textContent='S/ '+tot.toFixed(2);
+});
+}
+async function registrarAsistencia(){
+const cli=document.getElementById('ck').value.trim();
+if(!cli){nt('Ingrese nombre del cliente','er');return}
+const sede=document.getElementById('ck-sede').value;
+const fecha=hoy();
+const clasePrev=asistencias.filter(a=>a.cliente.toLowerCase()===cli.toLowerCase()).length;
+const claseNum=clasePrev+1;
+const dbObj={fecha:fecha,cliente:cli,sede:sede,clase_num:claseNum};
+const{data,error}=await sb.from('gym_asistencias').insert(dbObj).select().single();
+if(error){nt('Error al registrar','er');return}
+asistencias.push({_sid:data.id,fecha:fecha,cliente:cli,sede:sede,claseNum:claseNum});
+renderAsistencias();nt('Ingreso registrado: '+cli+' (Clase #'+claseNum+')','ok');
+document.getElementById('ck').value='';
+}
+function recalcularClases(){
+const indices=[];
+asistencias.forEach((a,i)=>indices.push(i));
+indices.sort((a,b)=>asistencias[a].fecha.localeCompare(asistencias[b].fecha));
+const conteo={};
+indices.forEach(i=>{
+const key=asistencias[i].cliente.toLowerCase();
+conteo[key]=(conteo[key]||0)+1;
+asistencias[i].claseNum=conteo[key];
+});
+}
+function editarAsistencia(idx){
+editAsisIdx=idx;const a=asistencias[idx];
+setVal('asis-edit-cli',a.cliente);setVal('asis-edit-sede',a.sede);setVal('asis-edit-fecha',a.fecha);
+op('m-asis-edit');
+}
+async function guardarEditAsistencia(){
+const cli=document.getElementById('asis-edit-cli').value.trim();
+if(!cli){nt('Ingrese nombre del cliente','er');return}
+const sede=document.getElementById('asis-edit-sede').value;
+const fecha=document.getElementById('asis-edit-fecha').value||hoy();
+const sid=asistencias[editAsisIdx]._sid;
+const{error}=await sb.from('gym_asistencias').update({cliente:cli,sede:sede,fecha:fecha}).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+asistencias[editAsisIdx].cliente=cli;
+asistencias[editAsisIdx].sede=sede;
+asistencias[editAsisIdx].fecha=fecha;
+recalcularClases();renderAsistencias();cl('m-asis-edit');nt('Asistencia actualizada','ok');
+}
+function renderAsistencias(){
+const hoyStr=hoy();const sg=sedeGlobal();
+const fSede=document.getElementById('f-asis-sede')?document.getElementById('f-asis-sede').value:'';
+const sedeFilter=sg||fSede;
+const tbodyHoy=document.getElementById('t-asis-hoy');tbodyHoy.innerHTML='';
+let hoyCount=0;
+asistencias.forEach((a,i)=>{
+if(a.fecha!==hoyStr)return;
+if(sedeFilter&&a.sede!==sedeFilter)return;
+hoyCount++;
+const tr=document.createElement('tr');
+tr.innerHTML='<td>'+a.cliente+'</td><td>'+a.sede+'</td><td><span class="bg bl">Clase #'+a.claseNum+'</span></td>'+actBtns('asis',i);
+tbodyHoy.appendChild(tr);
+});
+document.getElementById('asis-hoy').textContent=hoyCount;
+document.getElementById('asis-total').textContent=sedeFilter?asistencias.filter(a=>a.sede===sedeFilter).length:asistencias.length;
+const tbodyAll=document.getElementById('t-asis-all');tbodyAll.innerHTML='';
+let filtrado=asistencias.map((a,i)=>({...a,_i:i}));
+if(sedeFilter)filtrado=filtrado.filter(a=>a.sede===sedeFilter);
+filtrado.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+filtrado.forEach(a=>{
+const tr=document.createElement('tr');
+tr.innerHTML='<td>'+fechaCorta(a.fecha)+'</td><td>'+a.cliente+'</td><td>'+a.sede+'</td><td><span class="bg bl">Clase #'+a.claseNum+'</span></td>'+actBtns('asis',a._i);
+tbodyAll.appendChild(tr);
+});
+}
+function abrirModalEmp(idx){
+editEmpIdx=idx===undefined?-1:idx;
+document.getElementById('m-ent-title').textContent=editEmpIdx===-1?'Nuevo Empleado':'Editar Empleado';
+if(editEmpIdx>=0){
+const e=empleados[editEmpIdx];
+setVal('emp-nom',e.nombre);setVal('emp-cargo',e.cargo==='Entrenador'||e.cargo==='Limpieza'?e.cargo:'Otros');
+setVal('emp-sede',e.sede);setVal('emp-tel',e.telefono);setVal('emp-sueldo',e.sueldo);
+if(e.cargo!=='Entrenador'&&e.cargo!=='Limpieza'){document.getElementById('cargo-otro').style.display='block';setVal('emp-cargo-otro',e.cargo)}
+else{document.getElementById('cargo-otro').style.display='none'}
+}else{setVal('emp-nom','');setVal('emp-tel','');setVal('emp-sueldo','');setVal('emp-cargo-otro','');document.getElementById('cargo-otro').style.display='none'}
+op('m-ent');
+}
+async function guardarEmpleado(){
+const nom=document.getElementById('emp-nom').value.trim();
+if(!nom){nt('Ingrese nombre del empleado','er');return}
+let cargo=document.getElementById('emp-cargo').value;
+if(cargo==='Otros'){cargo=document.getElementById('emp-cargo-otro').value.trim()||'Otros'}
+const obj={nombre:nom,cargo:cargo,sede:document.getElementById('emp-sede').value,telefono:document.getElementById('emp-tel').value,sueldo:parseFloat(document.getElementById('emp-sueldo').value)||0};
+if(editEmpIdx>=0){
+const sid=empleados[editEmpIdx]._sid;
+const{error}=await sb.from('gym_empleados').update(obj).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+empleados[editEmpIdx]={...obj,_sid:sid};nt('Empleado actualizado','ok');
+}else{
+const{data,error}=await sb.from('gym_empleados').insert(obj).select().single();
+if(error){nt('Error al guardar','er');return}
+empleados.push({...obj,_sid:data.id});nt('Empleado registrado','ok');
+}
+editEmpIdx=-1;renderEmpleados();cl('m-ent');actualizarDashboard();
+}
+function renderEmpleados(){
+const sg=sedeGlobal();
+const tbody=document.getElementById('t-ent');tbody.innerHTML='';
+empleados.forEach((e,i)=>{
+if(sg&&e.sede!==sg)return;
+const tr=document.createElement('tr');
+tr.innerHTML='<td>'+e.nombre+'</td><td>'+e.cargo+'</td><td>'+e.sede+'</td><td>'+e.telefono+'</td><td>S/ '+e.sueldo.toFixed(2)+'</td>'+actBtns('emp',i);
+tbody.appendChild(tr);
+});
+}
+function abrirModalProd(idx){
+editProdIdx=idx===undefined?-1:idx;
+document.getElementById('m-prod-title').textContent=editProdIdx===-1?'Registrar Producto':'Editar Producto';
+if(editProdIdx>=0){
+const p=almacen[editProdIdx];
+setVal('prod-nom',p.nombre);setVal('prod-cat',p.categoria);setVal('prod-precio',p.precio);setVal('prod-sede',p.sede);setVal('prod-stock',p.stock);
+}else{setVal('prod-nom','');setVal('prod-precio','');setVal('prod-stock','');}
+op('m-prod');
+}
+async function guardarProducto(){
+const nom=document.getElementById('prod-nom').value.trim();
+if(!nom){nt('Ingrese nombre del producto','er');return}
+const cat=document.getElementById('prod-cat').value;
+const precio=parseFloat(document.getElementById('prod-precio').value);
+if(!precio||precio<=0){nt('Ingrese un precio valido','er');return}
+const sede=document.getElementById('prod-sede').value;
+const stock=parseInt(document.getElementById('prod-stock').value)||0;
+if(editProdIdx>=0){
+const sid=almacen[editProdIdx]._sid;
+const dbObj={nombre:nom,categoria:cat,precio:precio,sede:sede,stock:stock};
+const{error}=await sb.from('gym_almacen').update(dbObj).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+almacen[editProdIdx]={...almacen[editProdIdx],...dbObj,_sid:sid};nt('Producto actualizado','ok');
+}else{
+const existe=almacen.find(p=>p.nombre.toLowerCase()===nom.toLowerCase()&&p.sede===sede);
+if(existe){
+existe.stock+=stock;existe.precio=precio;existe.categoria=cat;
+await sb.from('gym_almacen').update({stock:existe.stock,precio:precio,categoria:cat}).eq('id',existe._sid);
+}else{
+const dbObj={nombre:nom,categoria:cat,precio:precio,sede:sede,stock:stock,fecha_registro:hoy()};
+const{data,error}=await sb.from('gym_almacen').insert(dbObj).select().single();
+if(error){nt('Error al guardar','er');return}
+almacen.push({_sid:data.id,nombre:nom,categoria:cat,precio:precio,sede:sede,stock:stock,fechaRegistro:hoy()});
+}
+nt('Producto registrado: '+nom+' ('+sede+')','ok');
+}
+editProdIdx=-1;cl('m-prod');setVal('prod-nom','');setVal('prod-precio','');setVal('prod-stock','');
+actualizarAlmacen();
+}
+function actualizarAlmacen(){
+const sg=sedeGlobal();
+const tbody=document.getElementById('t-prod');tbody.innerHTML='';
+almacen.forEach((p,i)=>{
+if(sg&&p.sede!==sg)return;
+const tr=document.createElement('tr');
+const stockBg=p.stock>0?'ok':'no';
+tr.innerHTML='<td>'+fechaCorta(p.fechaRegistro||'')+'</td><td><b>'+p.nombre+'</b></td><td>'+p.categoria+'</td><td>S/ '+p.precio.toFixed(2)+'</td>'
++'<td>'+(p.sede==='Lurin'?'<span class="bg '+stockBg+'">'+p.stock+'</span>':'-')+'</td>'
++'<td>'+(p.sede==='Jose Galvez'?'<span class="bg '+stockBg+'">'+p.stock+'</span>':'-')+'</td>'
++'<td>'+(p.sede==='Villa El Salvador'?'<span class="bg '+stockBg+'">'+p.stock+'</span>':'-')+'</td>'
++actBtns('prod',i);
+tbody.appendChild(tr);
+});
+}
+function cargarProductosStock(){
+const sede=document.getElementById('stock-sede').value;
+const sel=document.getElementById('stock-prod');sel.innerHTML='';
+const prods=almacen.filter(p=>p.sede===sede);
+if(prods.length===0){sel.innerHTML='<option value="">-- No hay productos en '+sede+' --</option>';document.getElementById('stock-info').textContent='Registre productos primero.';return}
+prods.forEach(p=>{const idx=almacen.indexOf(p);const opt=document.createElement('option');opt.value=idx;opt.textContent=p.nombre+' (Stock actual: '+p.stock+')';sel.appendChild(opt)});
+document.getElementById('stock-info').textContent='';
+}
+async function guardarStock(){
+const idx=parseInt(document.getElementById('stock-prod').value);
+if(isNaN(idx)){nt('Seleccione un producto','er');return}
+const cant=parseInt(document.getElementById('stock-cant').value)||0;
+if(cant<=0){nt('Ingrese una cantidad valida','er');return}
+almacen[idx].stock+=cant;
+await sb.from('gym_almacen').update({stock:almacen[idx].stock}).eq('id',almacen[idx]._sid);
+actualizarAlmacen();cl('m-stock');nt('Se anadieron '+cant+' unidades a '+almacen[idx].nombre,'ok');setVal('stock-cant','');
+}
+function cargarProductosVenta(){
+const sede=document.getElementById('ven-sede').value;
+const sel=document.getElementById('ven-prod');sel.innerHTML='';
+const disponibles=almacen.filter(p=>p.sede===sede&&p.stock>0);
+if(disponibles.length===0){sel.innerHTML='<option value="">-- No hay productos en '+sede+' --</option>';document.getElementById('ven-stock-info').textContent='Registre productos primero.';return}
+disponibles.forEach(p=>{const opt=document.createElement('option');opt.value=p.nombre+'||'+p.precio;opt.textContent=p.nombre+' - S/ '+p.precio.toFixed(2)+' (Stock: '+p.stock+')';sel.appendChild(opt)});
+actualizarStockInfo();
+}
+function actualizarStockInfo(){
+const sede=document.getElementById('ven-sede').value;const val=document.getElementById('ven-prod').value;
+if(!val){document.getElementById('ven-stock-info').textContent='';return}
+const nombre=val.split('||')[0];const prod=almacen.find(p=>p.nombre===nombre&&p.sede===sede);
+if(prod)document.getElementById('ven-stock-info').textContent='Stock disponible en '+sede+': '+prod.stock+' unidades';
+}
+async function guardarVenta(){
+const cli=document.getElementById('ven-cli').value.trim()||'Cliente general';
+const sede=document.getElementById('ven-sede').value;
+const prodVal=document.getElementById('ven-prod').value;
+if(!prodVal){nt('Seleccione un producto','er');return}
+const nombre=prodVal.split('||')[0];const precio=parseFloat(prodVal.split('||')[1]);
+const cant=parseInt(document.getElementById('ven-cant').value)||1;
+const metodo=document.getElementById('ven-metodo').value;
+const comp=document.getElementById('ven-comp').value;
+const prod=almacen.find(p=>p.nombre===nombre&&p.sede===sede);
+if(!prod||prod.stock<cant){nt('Stock insuficiente. Disponible: '+(prod?prod.stock:0),'er');return}
+const total=precio*cant;prod.stock-=cant;
+await sb.from('gym_almacen').update({stock:prod.stock}).eq('id',prod._sid);
+const ventaObj={fecha:hoy(),producto:nombre,cantidad:cant,precio:precio,total:total,sede:sede,metodo:metodo};
+const{data:ventaData}=await sb.from('gym_ventas').insert(ventaObj).select().single();
+if(ventaData)ventas.push({...ventaObj,_sid:ventaData.id});
+const cajaObj={fecha:hoy(),hora:horaActual(),cliente:cli,tipo:'Tienda',concepto:nombre+' x'+cant,monto:total,metodo:metodo,comprobante:comp,sede:sede,registrado_por:usuarioActual?usuarioActual.usuario:''};
+const{data:cajaData}=await sb.from('gym_caja').insert(cajaObj).select().single();
+if(cajaData)caja.push({...cajaObj,_sid:cajaData.id});
+cl('m-ven');nt('Venta registrada S/ '+total.toFixed(2),'ok');
+setVal('ven-cli','');document.getElementById('ven-cant').value='1';
+renderVentas();actualizarAlmacen();actualizarCaja();actualizarDashboard();
+}
+function renderVentas(){
+const sg=sedeGlobal();
+const tbody=document.getElementById('t-vent');tbody.innerHTML='';
+let lista=ventas.map((v,i)=>({...v,_i:i}));
+if(sg)lista=lista.filter(v=>v.sede===sg);
+const sorted=lista.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+const semanas={};
+sorted.forEach(v=>{const lunes=getLunes(v.fecha);if(!semanas[lunes])semanas[lunes]=[];semanas[lunes].push(v)});
+const semanasOrdenadas=Object.keys(semanas).sort((a,b)=>b.localeCompare(a));
+semanasOrdenadas.forEach(lunes=>{
+const grupo=semanas[lunes];const totalSemana=grupo.reduce((s,v)=>s+v.total,0);const cantSemana=grupo.reduce((s,v)=>s+v.cantidad,0);
+const sep=document.createElement('tr');sep.className='week-sep';
+sep.innerHTML='<td colspan="8">'+semanaLabel(lunes)+'<span class="week-total">'+cantSemana+' uds. | S/ '+totalSemana.toFixed(2)+'</span></td>';
+tbody.appendChild(sep);
+grupo.forEach(v=>{const tr=document.createElement('tr');
+tr.innerHTML='<td>'+fechaCorta(v.fecha)+'</td><td>'+v.producto+'</td><td>'+v.cantidad+'</td><td>S/ '+v.precio.toFixed(2)+'</td><td><b>S/ '+v.total.toFixed(2)+'</b></td><td>'+v.sede+'</td><td>'+v.metodo+'</td>'+actBtns('vent',v._i);
+tbody.appendChild(tr)});
+});
+}
+function editarVenta(idx){
+editVentIdx=idx;const v=ventas[idx];
+setVal('vent-edit-prod',v.producto);setVal('vent-edit-cant',v.cantidad);setVal('vent-edit-precio',v.precio);
+setVal('vent-edit-sede',v.sede);setVal('vent-edit-metodo',v.metodo);setVal('vent-edit-fecha',v.fecha);
+op('m-vent-edit');
+}
+async function guardarEditVenta(){
+const prod=document.getElementById('vent-edit-prod').value.trim();
+if(!prod){nt('Ingrese nombre del producto','er');return}
+const cant=parseInt(document.getElementById('vent-edit-cant').value)||1;
+const precio=parseFloat(document.getElementById('vent-edit-precio').value)||0;
+const sede=document.getElementById('vent-edit-sede').value;
+const metodo=document.getElementById('vent-edit-metodo').value;
+const fecha=document.getElementById('vent-edit-fecha').value||hoy();
+const sid=ventas[editVentIdx]._sid;
+const updateObj={producto:prod,cantidad:cant,precio:precio,total:cant*precio,sede:sede,metodo:metodo,fecha:fecha};
+const{error}=await sb.from('gym_ventas').update(updateObj).eq('id',sid);
+if(error){nt('Error al actualizar','er');return}
+ventas[editVentIdx]={...ventas[editVentIdx],...updateObj,_sid:sid};
+renderVentas();cl('m-vent-edit');nt('Venta actualizada','ok');
+}
+function actualizarDashboard(){
+const sg=sedeGlobal();const hoyStr=hoy();const mes=mesActual();
+const cliFiltered=sg?clientes.filter(c=>c.sede===sg):clientes;
+document.getElementById('d-cli').textContent=cliFiltered.length;
+const memActivas=membresias.filter(m=>{if(sg&&m.sede!==sg)return false;return m.fin>=hoyStr});
+document.getElementById('d-mem').textContent=memActivas.length;
+const cajaMes=caja.filter(r=>{if(sg&&r.sede!==sg)return false;return r.fecha.substring(0,7)===mes});
+document.getElementById('d-ing').textContent=cajaMes.reduce((s,r)=>s+r.monto,0).toFixed(2);
+const hoyDate=new Date(hoyStr+'T12:00:00');const en7=new Date(hoyDate);en7.setDate(en7.getDate()+7);
+const porVencer=membresias.filter(m=>{if(sg&&m.sede!==sg)return false;const f=new Date(m.fin+'T12:00:00');return f>=hoyDate&&f<=en7});
 document.getElementById('d-ven').textContent=porVencer.length;
-const sedes=['Lurin','Jose Galvez','Villa El Salvador'];
-const tbSede=document.getElementById('t-dash-sede');tbSede.innerHTML='';
-sedes.forEach(sede=>{
-const cliS=cli?cli.filter(c=>c.sede===sede).length:0;
-const actS=activas.filter(m=>m.sede===sede).length;
-const empS=emp?emp.filter(e=>e.sede===sede).length:0;
-const cajaSede=caja?caja.filter(c=>c.sede===sede&&c.fecha&&c.fecha.substring(0,7)===mesActual):[];
-const memS=cajaSede.filter(c=>c.tipo==='Membresia').reduce((s,c)=>s+parseFloat(c.monto||0),0);
-const tienS=cajaSede.filter(c=>c.tipo==='Tienda').reduce((s,c)=>s+parseFloat(c.monto||0),0);
-const otrS=cajaSede.filter(c=>c.tipo==='Otro').reduce((s,c)=>s+parseFloat(c.monto||0),0);
-const totalS=memS+tienS+otrS;
-tbSede.innerHTML+=`<tr><td><b>${sede}</b></td><td>${sede==='Villa El Salvador'?'VES':sede==='Jose Galvez'?'SJL':'Lurin'}</td><td>${cliS}</td><td>${actS}</td><td>${empS}</td><td>${fmtMonto(memS)}</td><td>${fmtMonto(tienS)}</td><td>${fmtMonto(otrS)}</td><td><b>${fmtMonto(totalS)}</b></td></tr>`});
-const tbVenc=document.getElementById('t-dash-venc');tbVenc.innerHTML='';
+const sedesData=[{key:'Lurin',label:'Leslie GYM Lurin'},{key:'Jose Galvez',label:'Leslie GYM Jose Galvez'},{key:'Villa El Salvador',label:'Leslie GYM Villa El Salvador'}];
+const tbody=document.getElementById('t-dash-sede');tbody.innerHTML='';
+sedesData.forEach(s=>{
+if(sg&&s.key!==sg)return;
+const cajaSede=caja.filter(r=>r.sede===s.key);
+const cliSede=clientes.filter(c=>c.sede===s.key).length;
+const memSede=membresias.filter(m=>m.sede===s.key&&m.fin>=hoyStr).length;
+const empSede=empleados.filter(e=>e.sede===s.key).length;
+const memMonto=cajaSede.filter(r=>r.tipo==='Membresia').reduce((sum,r)=>sum+r.monto,0);
+const tienMonto=cajaSede.filter(r=>r.tipo==='Tienda').reduce((sum,r)=>sum+r.monto,0);
+const otroMonto=cajaSede.filter(r=>r.tipo==='Otro').reduce((sum,r)=>sum+r.monto,0);
+const totalSede=memMonto+tienMonto+otroMonto;
+const tr=document.createElement('tr');
+tr.innerHTML='<td><b>'+s.label+'</b></td><td>'+s.key+'</td><td>'+cliSede+'</td><td>'+memSede+'</td><td>'+empSede+'</td><td>S/ '+memMonto.toFixed(2)+'</td><td>S/ '+tienMonto.toFixed(2)+'</td><td>S/ '+otroMonto.toFixed(2)+'</td><td><b>S/ '+totalSede.toFixed(2)+'</b></td>';
+tbody.appendChild(tr);
+});
+const tbodyVenc=document.getElementById('t-dash-venc');tbodyVenc.innerHTML='';
 porVencer.forEach(m=>{
-tbVenc.innerHTML+=`<tr><td>${m.cliente_nombre||'-'}</td><td>${getPlanNombre(m.plan)}</td><td>${m.sede||'-'}</td><td>${fmtFecha(m.fecha_fin)}</td><td><button class="bt s g" onclick="renovarMembresia('${m.id}')">Renovar</button></td></tr>`})
+const tr=document.createElement('tr');
+tr.innerHTML='<td>'+m.cliente+'</td><td>'+m.plan+'</td><td>'+m.sede+'</td><td>'+fechaCorta(m.fin)+'</td><td><button class="bt s p" onclick="abrirModalMem()">Renovar</button></td>';
+tbodyVenc.appendChild(tr);
+});
 }
-function abrirModalCli(){editandoCliId=null;document.getElementById('m-cli-title').textContent='Nuevo Cliente';document.getElementById('cli-nom').value='';document.getElementById('cli-gen').value='Masculino';document.getElementById('cli-tel').value='';document.getElementById('cli-email').value='';document.getElementById('cli-nac').value='';if(currentRol==='admin')document.getElementById('cli-sede').value='Lurin';op('m-cli')}
-async function editarCliente(id){const{data}=await sb.from('clientes').select('*').eq('id',id).single();if(!data)return;editandoCliId=id;document.getElementById('m-cli-title').textContent='Editar Cliente';document.getElementById('cli-nom').value=data.nombre||'';document.getElementById('cli-gen').value=data.genero||'Masculino';document.getElementById('cli-tel').value=data.telefono||'';document.getElementById('cli-email').value=data.email||'';document.getElementById('cli-nac').value=data.nacimiento||'';if(currentRol==='admin')document.getElementById('cli-sede').value=data.sede||'Lurin';op('m-cli')}
-async function guardarCliente(){const obj={nombre:document.getElementById('cli-nom').value.trim(),genero:document.getElementById('cli-gen').value,telefono:document.getElementById('cli-tel').value.trim(),email:document.getElementById('cli-email').value.trim(),nacimiento:document.getElementById('cli-nac').value,sede:document.getElementById('cli-sede').value,estado:'Activo'};if(!obj.nombre){nt('Ingrese el nombre','er');return}if(editandoCliId){await sb.from('clientes').update(obj).eq('id',editandoCliId)}else{await sb.from('clientes').insert(obj)}cl('m-cli');nt(editandoCliId?'Cliente actualizado':'Cliente registrado');cargarTodo()}
-async function eliminarCliente(id){if(!confirm('Eliminar este cliente?'))return;await sb.from('clientes').delete().eq('id',id);nt('Cliente eliminado');cargarTodo()}
-function abrirModalMem(){editandoMemId=null;document.getElementById('m-mem-title').textContent='Nueva Membresia';document.getElementById('mem-cli').value='';document.getElementById('mem-plan').value='100';document.getElementById('mem-ini').value=hoy();if(currentRol==='admin')document.getElementById('mem-sede').value='Lurin';document.getElementById('mem-metodo').value='Efectivo';document.getElementById('mem-comp').value='Boleta';op('m-mem')}
-async function editarMembresia(id){const{data}=await sb.from('membresias').select('*').eq('id',id).single();if(!data)return;editandoMemId=id;document.getElementById('m-mem-title').textContent='Editar Membresia';document.getElementById('mem-cli').value=data.cliente_nombre||'';document.getElementById('mem-plan').value=data.plan||'100';document.getElementById('mem-ini').value=data.fecha_inicio||'';if(currentRol==='admin')document.getElementById('mem-sede').value=data.sede||'Lurin';document.getElementById('mem-metodo').value=data.metodo_pago||'Efectivo';document.getElementById('mem-comp').value=data.comprobante||'Boleta';op('m-mem')}
-async function guardarMembresia(){const cli=document.getElementById('mem-cli').value.trim();const plan=document.getElementById('mem-plan').value;const ini=document.getElementById('mem-ini').value;const sede=document.getElementById('mem-sede').value;const metodo=document.getElementById('mem-metodo').value;const comp=document.getElementById('mem-comp').value;if(!cli||!ini){nt('Complete los campos','er');return}const dias=getPlanDias(plan);let fin='';if(dias>0){const f=new Date(ini+'T00:00:00');f.setDate(f.getDate()+dias);fin=f.toISOString().split('T')[0]}else{fin=ini}const obj={cliente_nombre:cli,plan:parseInt(plan),fecha_inicio:ini,fecha_fin:fin,sede,metodo_pago:metodo,comprobante:comp};if(editandoMemId){await sb.from('membresias').update(obj).eq('id',editandoMemId)}else{await sb.from('membresias').insert(obj);await sb.from('caja').insert({fecha:ini,cliente_nombre:cli,tipo:'Membresia',concepto:getPlanNombre(plan),monto:parseInt(plan),metodo_pago:metodo,comprobante:comp,sede})}cl('m-mem');nt(editandoMemId?'Membresia actualizada':'Membresia registrada');cargarTodo()}
-async function eliminarMembresia(id){if(!confirm('Eliminar esta membresia?'))return;await sb.from('membresias').delete().eq('id',id);nt('Membresia eliminada');cargarTodo()}
-async function renovarMembresia(id){const{data}=await sb.from('membresias').select('*').eq('id',id).single();if(!data)return;editandoMemId=null;document.getElementById('m-mem-title').textContent='Renovar Membresia';document.getElementById('mem-cli').value=data.cliente_nombre||'';document.getElementById('mem-plan').value=data.plan||'100';const finAnterior=new Date(data.fecha_fin+'T00:00:00');const hoyF=new Date(hoy());const nuevoInicio=finAnterior>hoyF?data.fecha_fin:hoy();document.getElementById('mem-ini').value=nuevoInicio;if(currentRol==='admin')document.getElementById('mem-sede').value=data.sede||'Lurin';document.getElementById('mem-metodo').value='Efectivo';document.getElementById('mem-comp').value='Boleta';op('m-mem')}
-function abrirModalOtro(){editandoOtroId=null;document.getElementById('m-otro-title').textContent='Registrar Otro Cobro';document.getElementById('otro-cli').value='';document.getElementById('otro-tipo-wrap').style.display='none';document.getElementById('otro-concepto-wrap').style.display='';document.getElementById('otro-concepto-text-wrap').style.display='none';document.getElementById('otro-desc-wrap').style.display='none';document.getElementById('otro-concepto').value='Clase personalizada';document.getElementById('otro-monto').value='';document.getElementById('otro-fecha').value=hoy();if(currentRol==='admin')document.getElementById('otro-sede').value='Lurin';document.getElementById('otro-metodo').value='Efectivo';document.getElementById('otro-comp').value='Boleta';op('m-otro')}
-document.getElementById('otro-concepto').addEventListener('change',function(){document.getElementById('otro-desc-wrap').style.display=this.value==='Otro'?'':'none'});
-async function editarOtroCobro(id){const{data}=await sb.from('caja').select('*').eq('id',id).single();if(!data)return;editandoOtroId=id;document.getElementById('m-otro-title').textContent='Editar Cobro';document.getElementById('otro-cli').value=data.cliente_nombre||'';document.getElementById('otro-tipo-wrap').style.display='';document.getElementById('otro-tipo-show').value=data.tipo||'';document.getElementById('otro-concepto-wrap').style.display='none';document.getElementById('otro-concepto-text-wrap').style.display='';document.getElementById('otro-concepto-text').value=data.concepto||'';document.getElementById('otro-desc-wrap').style.display='none';document.getElementById('otro-monto').value=data.monto||'';document.getElementById('otro-fecha').value=data.fecha||hoy();if(currentRol==='admin')document.getElementById('otro-sede').value=data.sede||'Lurin';document.getElementById('otro-metodo').value=data.metodo_pago||'Efectivo';document.getElementById('otro-comp').value=data.comprobante||'Boleta';op('m-otro')}
-async function guardarOtroCobro(){const cli=document.getElementById('otro-cli').value.trim();const monto=parseFloat(document.getElementById('otro-monto').value);const fecha=document.getElementById('otro-fecha').value;const sede=document.getElementById('otro-sede').value;const metodo=document.getElementById('otro-metodo').value;const comp=document.getElementById('otro-comp').value;if(!monto||!fecha){nt('Complete los campos','er');return}if(editandoOtroId){const obj={cliente_nombre:cli,monto,fecha,sede,metodo_pago:metodo,comprobante:comp};await sb.from('caja').update(obj).eq('id',editandoOtroId)}else{let concepto=document.getElementById('otro-concepto').value;if(concepto==='Otro')concepto=document.getElementById('otro-desc').value.trim()||'Otro cobro';const obj={fecha,cliente_nombre:cli,tipo:'Otro',concepto,monto,metodo_pago:metodo,comprobante:comp,sede};await sb.from('caja').insert(obj)}cl('m-otro');nt(editandoOtroId?'Cobro actualizado':'Cobro registrado');cargarTodo()}
-async function eliminarCaja(id){if(!confirm('Eliminar este registro de caja?'))return;await sb.from('caja').delete().eq('id',id);nt('Registro eliminado');cargarTodo()}
-async function registrarAsistencia(){const nombre=document.getElementById('ck').value.trim();const sede=document.getElementById('ck-sede').value;if(!nombre){nt('Ingrese nombre del cliente','er');return}const{data:prev}=await sb.from('asistencias').select('*').eq('cliente_nombre',nombre);const claseNum=(prev?prev.length:0)+1;await sb.from('asistencias').insert({fecha:hoy(),cliente_nombre:nombre,sede,clase_numero:claseNum});document.getElementById('ck').value='';nt('Asistencia registrada');cargarTodo()}
-async function eliminarAsistencia(id){if(!confirm('Eliminar esta asistencia?'))return;await sb.from('asistencias').delete().eq('id',id);nt('Asistencia eliminada');cargarTodo()}
-function abrirModalEmp(){editandoEmpId=null;document.getElementById('m-emp-title').textContent='Nuevo Empleado';document.getElementById('emp-nom').value='';document.getElementById('emp-cargo').value='Entrenador';document.getElementById('emp-sede').value='Lurin';document.getElementById('emp-tel').value='';document.getElementById('emp-sueldo').value='';op('m-emp')}
-async function editarEmpleado(id){const{data}=await sb.from('empleados').select('*').eq('id',id).single();if(!data)return;editandoEmpId=id;document.getElementById('m-emp-title').textContent='Editar Empleado';document.getElementById('emp-nom').value=data.nombre||'';document.getElementById('emp-cargo').value=data.cargo||'Entrenador';document.getElementById('emp-sede').value=data.sede||'Lurin';document.getElementById('emp-tel').value=data.telefono||'';document.getElementById('emp-sueldo').value=data.sueldo||'';op('m-emp')}
-async function guardarEmpleado(){const obj={nombre:document.getElementById('emp-nom').value.trim(),cargo:document.getElementById('emp-cargo').value,sede:document.getElementById('emp-sede').value,telefono:document.getElementById('emp-tel').value.trim(),sueldo:parseFloat(document.getElementById('emp-sueldo').value)||0};if(!obj.nombre){nt('Ingrese el nombre','er');return}if(editandoEmpId){await sb.from('empleados').update(obj).eq('id',editandoEmpId)}else{await sb.from('empleados').insert(obj)}cl('m-emp');nt(editandoEmpId?'Empleado actualizado':'Empleado registrado');cargarTodo()}
-async function eliminarEmpleado(id){if(!confirm('Eliminar este empleado?'))return;await sb.from('empleados').delete().eq('id',id);nt('Empleado eliminado');cargarTodo()}
-async function guardarProducto(){const obj={nombre:document.getElementById('prod-nom').value.trim(),categoria:document.getElementById('prod-cat').value,precio:parseFloat(document.getElementById('prod-precio').value)||0,stock_lurin:parseInt(document.getElementById('prod-s1').value)||0,stock_jg:parseInt(document.getElementById('prod-s2').value)||0,stock_ves:parseInt(document.getElementById('prod-s3').value)||0};if(!obj.nombre){nt('Ingrese nombre del producto','er');return}await sb.from('productos').insert(obj);cl('m-prod');nt('Producto registrado');cargarTodo()}
-async function agregarStock(){const prodId=document.getElementById('stock-prod').value;const sede=document.getElementById('stock-sede').value;const cant=parseInt(document.getElementById('stock-cant').value)||0;if(!prodId||cant<=0){nt('Seleccione producto y cantidad','er');return}const col=sede==='Lurin'?'stock_lurin':sede==='Jose Galvez'?'stock_jg':'stock_ves';const{data}=await sb.from('productos').select(col).eq('id',prodId).single();const actual=data?data[col]||0:0;await sb.from('productos').update({[col]:actual+cant}).eq('id',prodId);cl('m-stock');nt('Stock agregado');cargarTodo()}
-async function registrarVenta(){const prodId=document.getElementById('ven-prod').value;const sede=document.getElementById('ven-sede').value;const cant=parseInt(document.getElementById('ven-cant').value)||0;const metodo=document.getElementById('ven-metodo').value;if(!prodId||cant<=0){nt('Complete los campos','er');return}const{data:prod}=await sb.from('productos').select('*').eq('id',prodId).single();if(!prod)return;const col=sede==='Lurin'?'stock_lurin':sede==='Jose Galvez'?'stock_jg':'stock_ves';if((prod[col]||0)<cant){nt('Stock insuficiente en '+sede,'er');return}const total=prod.precio*cant;await sb.from('productos').update({[col]:prod[col]-cant}).eq('id',prodId);await sb.from('ventas').insert({fecha:hoy(),producto_nombre:prod.nombre,cantidad:cant,precio_unit:prod.precio,total,sede,metodo_pago:metodo});await sb.from('caja').insert({fecha:hoy(),cliente_nombre:'Venta tienda',tipo:'Tienda',concepto:prod.nombre+' x'+cant,monto:total,metodo_pago:metodo,comprobante:'Boleta',sede});cl('m-ven');nt('Venta registrada');cargarTodo()}
-async function eliminarProducto(id){if(!confirm('Eliminar este producto?'))return;await sb.from('productos').delete().eq('id',id);nt('Producto eliminado');cargarTodo()}
-async function eliminarVenta(id){if(!confirm('Eliminar esta venta?'))return;await sb.from('ventas').delete().eq('id',id);nt('Venta eliminada');cargarTodo()}
-async function editarUsuario(id){const{data}=await sb.from('usuarios').select('*').eq('id',id).single();if(!data)return;document.getElementById('usr-user').value=data.usuario;document.getElementById('usr-nombre').value=data.nombre||'';document.getElementById('usr-pass').value='';document.getElementById('m-usr').dataset.id=id;op('m-usr')}
-async function guardarUsuario(){const id=document.getElementById('m-usr').dataset.id;const obj={nombre:document.getElementById('usr-nombre').value.trim()};const pass=document.getElementById('usr-pass').value.trim();if(pass)obj.clave=pass;await sb.from('usuarios').update(obj).eq('id',id);cl('m-usr');nt('Usuario actualizado');cargarUsuarios()}
-async function cambiarClaveAdmin(){const p1=document.getElementById('admin-new-pass').value;const p2=document.getElementById('admin-conf-pass').value;if(!p1||p1!==p2){nt('Las contrasenas no coinciden','er');return}await sb.from('usuarios').update({clave:p1}).eq('id',currentUser.id);nt('Contrasena cambiada');document.getElementById('admin-new-pass').value='';document.getElementById('admin-conf-pass').value=''}
-async function exportarBackup(){const tablas=['clientes','membresias','caja','asistencias','empleados','productos','ventas','usuarios'];const backup={fecha:new Date().toISOString(),version:'3.0'};for(const t of tablas){const{data}=await sb.from(t).select('*');backup[t]=data||[]}const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='leslie_gym_backup_'+hoy()+'.json';a.click();nt('Backup descargado')}
-async function importarBackup(){const file=document.getElementById('bk-file').files[0];if(!file){nt('Seleccione un archivo','er');return}if(!confirm('Esto REEMPLAZARA todos los datos. Continuar?'))return;const text=await file.text();const backup=JSON.parse(text);const tablas=['clientes','membresias','caja','asistencias','empleados','productos','ventas','usuarios'];for(const t of tablas){if(backup[t]){await sb.from(t).delete().neq('id','00000000-0000-0000-0000-000000000000');for(let i=0;i<backup[t].length;i+=100){const chunk=backup[t].slice(i,i+100);await sb.from(t).insert(chunk)}}}nt('Backup restaurado');cargarTodo()}
-async function migrarASupabase(){const tablas=['clientes','membresias','caja','asistencias','empleados','productos','ventas'];let total=0;for(const t of tablas){const local=JSON.parse(localStorage.getItem(t)||'[]');if(local.length>0){for(let i=0;i<local.length;i+=100){const chunk=local.slice(i,i+100).map(r=>{const nr={...r};delete nr.id;return nr});await sb.from(t).insert(chunk)}total+=local.length}}if(total>0){nt('Migrados '+total+' registros a la nube');cargarTodo()}else{nt('No hay datos locales para migrar','er')}}
+function exportarBackup(){
+const data={version:'leslie_gym_v2',fecha:new Date().toISOString(),clientes:clientes,membresias:membresias,caja:caja,asistencias:asistencias,empleados:empleados,almacen:almacen,ventas:ventas};
+const json=JSON.stringify(data,null,2);
+const blob=new Blob([json],{type:'application/json'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');
+a.href=url;a.download='leslie_gym_backup_'+hoy().replace(/-/g,'')+'.json';a.click();
+URL.revokeObjectURL(url);
+localStorage.setItem('gym_ultimo_backup',hoy());
+actualizarBackupInfo();nt('Backup descargado correctamente','ok');
+}
+async function importarBackup(){
+const input=document.getElementById('bk-file');
+if(!input.files||!input.files[0]){nt('Seleccione un archivo de backup','er');return}
+if(!confirm('ATENCION: Esto reemplazara TODOS los datos en la nube. Desea continuar?'))return;
+const reader=new FileReader();
+reader.onload=async function(e){
+try{
+const data=JSON.parse(e.target.result);
+if(!data.version||!data.version.startsWith('leslie_gym')){nt('Archivo no valido','er');return}
+await Promise.all([
+sb.from('gym_clientes').delete().neq('id',0),
+sb.from('gym_membresias').delete().neq('id',0),
+sb.from('gym_caja').delete().neq('id',0),
+sb.from('gym_asistencias').delete().neq('id',0),
+sb.from('gym_empleados').delete().neq('id',0),
+sb.from('gym_almacen').delete().neq('id',0),
+sb.from('gym_ventas').delete().neq('id',0)
+]);
+const lc=data.clientes||[];const lm=data.membresias||[];const lcj=data.caja||[];
+const la=data.asistencias||[];const le=data.empleados||[];const lal=data.almacen||[];const lv=data.ventas||[];
+if(lc.length)await sb.from('gym_clientes').insert(lc.map(c=>({nombre:c.nombre,telefono:c.telefono,email:c.email,genero:c.genero,nacimiento:c.nacimiento||null,sede:c.sede})));
+if(lm.length)await sb.from('gym_membresias').insert(lm.map(m=>({cliente:m.cliente,plan:m.plan,sede:m.sede,inicio:m.inicio,fin:m.fin,metodo:m.metodo,comprobante:m.comp||m.comprobante,monto:m.monto})));
+if(lcj.length)await sb.from('gym_caja').insert(lcj.map(c=>({fecha:c.fecha,hora:c.hora||'',cliente:c.cliente,tipo:c.tipo,concepto:c.concepto,monto:c.monto,metodo:c.metodo,comprobante:c.comprobante,sede:c.sede,registrado_por:c.registrado_por||''})));
+if(la.length)await sb.from('gym_asistencias').insert(la.map(a=>({fecha:a.fecha,cliente:a.cliente,sede:a.sede,clase_num:a.claseNum||a.clase_num||0})));
+if(le.length)await sb.from('gym_empleados').insert(le.map(e=>({nombre:e.nombre,cargo:e.cargo,sede:e.sede,telefono:e.telefono,sueldo:e.sueldo})));
+if(lal.length)await sb.from('gym_almacen').insert(lal.map(a=>({nombre:a.nombre,categoria:a.categoria,precio:a.precio,sede:a.sede,stock:a.stock,fecha_registro:a.fechaRegistro||a.fecha_registro||null})));
+if(lv.length)await sb.from('gym_ventas').insert(lv.map(v=>({fecha:v.fecha,producto:v.producto,cantidad:v.cantidad,precio:v.precio,total:v.total,sede:v.sede,metodo:v.metodo})));
+await cargarDatos();
+actualizarBackupInfo();input.value='';
+nt('Datos restaurados ('+lc.length+' clientes, '+lm.length+' membresias)','ok');
+}catch(err){nt('Error al leer el archivo','er');console.error(err)}
+};
+reader.readAsText(input.files[0]);
+}
+function actualizarBackupInfo(){
+const total=clientes.length+membresias.length+caja.length+asistencias.length+empleados.length+almacen.length+ventas.length;
+document.getElementById('bk-total').textContent=total;
+const ultimo=localStorage.getItem('gym_ultimo_backup');
+document.getElementById('bk-fecha').textContent=ultimo?fechaCorta(ultimo):'Nunca';
+}
+async function migrarASupabase(){
+const lc=JSON.parse(localStorage.getItem('gym_clientes')||'[]');
+const lm=JSON.parse(localStorage.getItem('gym_membresias')||'[]');
+const lcj=JSON.parse(localStorage.getItem('gym_caja')||'[]');
+const la=JSON.parse(localStorage.getItem('gym_asistencias')||'[]');
+const le=JSON.parse(localStorage.getItem('gym_empleados')||'[]');
+const lal=JSON.parse(localStorage.getItem('gym_almacen')||'[]');
+const lv=JSON.parse(localStorage.getItem('gym_ventas')||'[]');
+const total=lc.length+lm.length+lcj.length+la.length+le.length+lal.length+lv.length;
+if(total===0){nt('No hay datos locales para migrar','er');return}
+if(!confirm('Se encontraron '+total+' registros locales. Desea subirlos a la nube?'))return;
+try{
+if(lc.length)await sb.from('gym_clientes').insert(lc.map(c=>({nombre:c.nombre,telefono:c.telefono||'',email:c.email||'',genero:c.genero||'',nacimiento:c.nacimiento||null,sede:c.sede||''})));
+if(lm.length)await sb.from('gym_membresias').insert(lm.map(m=>({cliente:m.cliente,plan:m.plan,sede:m.sede,inicio:m.inicio,fin:m.fin,metodo:m.metodo||'',comprobante:m.comp||'',monto:m.monto||0})));
+if(lcj.length)await sb.from('gym_caja').insert(lcj.map(c=>({fecha:c.fecha,hora:c.hora||'',cliente:c.cliente,tipo:c.tipo,concepto:c.concepto||'',monto:c.monto||0,metodo:c.metodo||'',comprobante:c.comprobante||'',sede:c.sede||'',registrado_por:c.registrado_por||''})));
+if(la.length)await sb.from('gym_asistencias').insert(la.map(a=>({fecha:a.fecha,cliente:a.cliente,sede:a.sede,clase_num:a.claseNum||0})));
+if(le.length)await sb.from('gym_empleados').insert(le.map(e=>({nombre:e.nombre,cargo:e.cargo||'',sede:e.sede||'',telefono:e.telefono||'',sueldo:e.sueldo||0})));
+if(lal.length)await sb.from('gym_almacen').insert(lal.map(a=>({nombre:a.nombre,categoria:a.categoria||'',precio:a.precio||0,sede:a.sede||'',stock:a.stock||0,fecha_registro:a.fechaRegistro||null})));
+if(lv.length)await sb.from('gym_ventas').insert(lv.map(v=>({fecha:v.fecha,producto:v.producto,cantidad:v.cantidad||0,precio:v.precio||0,total:v.total||0,sede:v.sede||'',metodo:v.metodo||''})));
+await cargarDatos();actualizarBackupInfo();
+nt('Migracion exitosa! '+total+' registros subidos a la nube','ok');
+}catch(e){nt('Error en la migracion','er');console.error(e)}
+}
+let usuarios=[],editUsrIdx=-1;
+async function cargarUsuarios(){
+try{
+const{data,error}=await sb.from('gym_usuarios').select('*').eq('rol','trabajador').order('id');
+if(error){nt('Error cargando usuarios','er');return}
+usuarios=data||[];
+renderUsuarios();
+}catch(e){console.error(e)}
+}
+function renderUsuarios(){
+const tbody=document.getElementById('t-usr');if(!tbody)return;tbody.innerHTML='';
+usuarios.forEach((u,i)=>{
+const tr=document.createElement('tr');
+const nombre=u.nombre?'<b>'+u.nombre+'</b>':'<span style="color:#999;font-style:italic">Sin asignar</span>';
+tr.innerHTML='<td>'+u.usuario+'</td><td>'+nombre+'</td><td>'+(u.sede||'-')+'</td><td>'+(u.turno||'-')+'</td><td><div class="act-btns"><button class="ae" onclick="editarUsuario('+i+')">Editar</button></div></td>';
+tbody.appendChild(tr);
+});
+}
+function editarUsuario(idx){
+editUsrIdx=idx;const u=usuarios[idx];
+setVal('usr-user',u.usuario);setVal('usr-nombre',u.nombre||'');setVal('usr-pass','');
+op('m-usr');
+}
+async function guardarUsuario(){
+const nombre=document.getElementById('usr-nombre').value.trim();
+const pass=document.getElementById('usr-pass').value.trim();
+const u=usuarios[editUsrIdx];
+const updateObj={};
+if(nombre!==(u.nombre||''))updateObj.nombre=nombre||null;
+if(pass)updateObj.clave=pass;
+if(Object.keys(updateObj).length===0){cl('m-usr');return}
+const{error}=await sb.from('gym_usuarios').update(updateObj).eq('id',u.id);
+if(error){nt('Error al actualizar','er');return}
+if(updateObj.nombre!==undefined)u.nombre=updateObj.nombre;
+renderUsuarios();cl('m-usr');nt('Usuario actualizado','ok');
+}
+async function cambiarClaveAdmin(){
+const nueva=document.getElementById('admin-new-pass').value.trim();
+const conf=document.getElementById('admin-conf-pass').value.trim();
+if(!nueva){nt('Ingrese la nueva contrasena','er');return}
+if(nueva!==conf){nt('Las contrasenas no coinciden','er');return}
+const{error}=await sb.from('gym_usuarios').update({clave:nueva}).eq('id',usuarioActual.id);
+if(error){nt('Error al cambiar contrasena','er');return}
+usuarioActual.clave=nueva;
+setVal('admin-new-pass','');setVal('admin-conf-pass','');
+nt('Contrasena actualizada correctamente','ok');
+}
 </script>
 </body>
 </html>
